@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 900px;
+            height: 900px;
+            /* padding: 10px; */
+            margin: 300px auto;
+            border: 4px solid rgb(100, 87, 87);
+            border-radius: 10px;
+            background-color: rgb(238, 235, 235);
+        }
+        .point {
+            width: 150px;
+            height: 150px;
+            line-height: 150px;
+            text-align: center;
+            border-radius: 50%;
+            background-color: rgb(194, 164, 164);
+        }
+        .gridbox {
+            display: grid;
+            grid-template-columns: repeat(3,200px);
+            grid-template-rows: repeat(3,200px);   
+            grid-auto-flow: column dense;
+            place-items: center ;
+            place-content: start center;
+            
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div class="box gridbox">
+        <div class="point box1">1</div>
+        <div class="point box2">2</div>
+        <div class="point box2">3</div>
+        <div class="point box2">4</div>
+        <div class="point box2">5</div>
+        <div class="point box2">6</div>
+        <div class="point box2">7</div>
+        <div class="point box2">8</div>
+        <div class="point box2">9</div>
+        
+    </div>
+
+   
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #myCanvas {
+            display: block;
+            margin: auto;
+            background-color: bisque;
+
+        }
+        #div{
+            font: bold 12px not specified;
+            text-align: center;
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+<body>
+    <canvas id='myCanvas' width="730" height="454">
+
+    </canvas>
+    <div id="div">
+        biaoti
+        <!-- <img src="./lunbotu/img/banner1.jpg" alt=""> -->
+    </div>
+    <script>
+        
+        var div = document.querySelector("#div");
+        var canvas = document.querySelector('#myCanvas');
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.onload = ()=>{ctx.drawImage(img,0,0,730,454,0,0,365,227);div.appendChild(img)}
+        img.src = './lunbotu/img/banner1.jpg';
+        img.width = 365;
+        img.height = 227;
+        ctx.translate(20,20)
+        
+    </script>
+</body>
+</html>

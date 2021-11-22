@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet/less" href="./草稿.less">
+    <script src="./jQuery/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.11.1/less.min.js" ></script>
+    <script src="./Vue_test/vue-2.6.12/dist/vue.js"></script>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click='sub_fangdou'>-1</button>
+        {{cnt}}
+        <button @click='add_jieliu'>+1</button>
+        
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                cnt: 0,
+                timer: null,
+                flag: true,
+            },
+            methods: {
+                sub_fangdou(){
+                    clearTimeout(this.timer);
+                    this.timer = setTimeout(()=>{this.cnt--},500);
+                },
+                add_jieliu(){
+                    if(this.flag){
+                        this.cnt++;
+                        this.flag = false;
+                        setTimeout(()=>{this.flag = true;},2000)
+                    }
+                },
+                /**
+                 * @desc 函数防抖
+                 * @param func 函数
+                 * @param wait 延迟执行毫秒数
+                 * @param immediate true 表立即执行，false 表非立即执行
+                */
+                debounce(func,wait,immediate) {
+                    let timeout;
+                    return function () {
+                        let context = this;
+                        let args = arguments;
+                        if (timeout) clearTimeout(timeout);
+                        if (immediate) {
+                            var callNow = !timeout;
+                            timeout = setTimeout(() => {
+                                timeout = null;
+                            }, wait)
+                            if (callNow) func.apply(context, args)
+                        }
+                        else {
+                            timeout = setTimeout(function(){
+                                func.apply(context, args)
+                            }, wait);
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../vue-2.6.12/dist/vue.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        input,
+        button {
+            outline: none;
+            box-sizing: content-box;
+        }
+
+        i {
+            font-style: normal;
+        }
+
+        #todo-wrapper {
+            width: 400px;
+            margin: 100px auto;
+            padding: 10px 0;
+            text-align: center;
+            box-shadow: 5px 2px 5px rgba(22, 22, 22, .4);
+            background-color: rgb(243, 242, 242);
+        }
+        .title {
+            margin-bottom: 5px;
+        }
+        .input-todo,
+        .todo-list {
+            position: relative;
+            min-width: 300px;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        .input-todo {
+            height: 30px;
+        }
+
+        .input,
+        .write {
+            height: 28px;
+            border: solid 1px #CCC;
+        }
+
+        /* todo输入框 */
+        .input {
+            padding-left: 30px;
+            width: 270px;
+            border-radius: 5px;
+            font-size: 14px;
+
+        }
+
+        .select-all,
+        .select-btn,
+        .delet,
+        .write {
+            position: absolute;
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* 全选按钮 */
+        .select-all {
+            left: 7px;
+            top: 50%;
+            transform: translateY(-50%);
+
+        }
+
+        /* write 按钮 */
+        .write {
+            top: 0;
+            right: -2px;
+            border-radius: 0 5px 5px 0;
+            width: 50px;
+        }
+
+        /* 完成按钮 */
+        .select-btn {
+            left: 0;
+        }
+
+        /* 完成状态 */
+        .done {
+            text-decoration: #666 line-through 1px;
+            opacity: 0.4;
+        }
+
+        /* 删除按钮 */
+        .delet {
+            right: 0;
+        }
+
+        /* todo列表项 */
+        .todos {
+            position: relative;
+            border-bottom: 1px rgb(204, 201, 201) dotted;
+        }
+
+        /* todo信息 */
+        .todo-msg {
+            display: inline-block;
+            font-size: 16px;
+            color: #666;
+            /* 内容溢出省略 */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="todo-wrapper">
+        <p class="title">ToDo List</p>
+        <div class="input-todo">
+            <!-- 全部done -->
+            <i class="select-all" @click='selectAll'>all</i>
+            <!-- 输入内容 -->
+            <input type="text" class="input" :placeholder='input.placeholder' v-model='todo_msg'
+                @keyup.enter='creatTodo'>
+            <!-- 创建todo -->
+            <button class="write" @click='creatTodo' :disabled='write_btn'>write</button>
+        </div>
+        <ul v-if="isNothing" class="todo-list">
+            <div class="todos" v-for='todo in todoList' :key='todo.id'>
+                <!-- 左侧按钮 -->
+                <i class="select-btn" @click='Done(todo)'>done</i>
+                <!-- todo内容 -->
+                <span :class="['todo-msg',{done: todo.isDone}]" :title='todo.msg' @dblclick='edit(todo)'
+                    v-show='!todo.show_edit'>{{todo.msg}}</span>
+                <!-- 右侧按钮 -->
+                <i class="delet" @click='Delete(todo)'>del</i>
+                <!-- 编辑框 -->
+                <input type="text" v-show='todo.show_edit' @keyup.enter='editCompleted(todo)'
+                    @blur='editCompleted(todo)' v-model='todo.edit_msg'>
+            </div>
+        </ul>
+        <div class="footer">
+
+        </div>
+    </div>
+
+    <script>
+
+        var vm = new Vue({
+            el: '#todo-wrapper',
+            data: {
+                input: {
+                    placeholder: 'write something to do...',
+                },
+                todo_msg: '',
+                todo_num: 0,
+                todoList: [],
+                isNothing: false,//列表为空
+                write_btn: true,//内容为空
+                selectall: false,//是否全做完
+            },
+            methods: {
+                creatTodo: function () {
+                    if (this.todo_msg == '') {
+                        return false;
+                    }
+                    var msg = this.todo_msg;
+                    var cnt = this.todo_num++;
+                    // console.log(cnt);
+                    var todo = {
+                        id: cnt,
+                        isDone: false,//是否做完
+                        msg: msg,
+                        edit_msg: msg,//修改内容
+                        show_edit: false,//是否要修改
+                    };
+                    var list = this.todoList;
+                    // list.push(todo);
+                    this.$set(list, list.length, todo);
+                    // list[list.length] =  todo;//该方法导致下一步Done方法先触发了数据更新，视图慢了一拍
+                    // list.splice();//空操作，进行监听刷新，使数组长度可被监听到
+                    this.todo_msg = '';//清空内容
+                },
+                Done: function (todo) {
+                    // this.$forceUpdate();//若不使用push()/set()则用此API手动触发视图更新，不推荐
+                    todo.isDone = !todo.isDone;
+                    console.log(todo);
+                },
+                Delete: function (todo) {
+                    var list = this.todoList;
+                    var index = list.indexOf(todo);
+                    list.splice(index, 1);
+                    // console.log(list)
+                },
+                selectAll: function () {
+                    var _this = this;
+                    var list = this.todoList;
+                    _this.selectall = _this.selectall ? false : true;
+                    this.todoList = list.map(function (todo) {//数组常用的遍历函数都不会触发视图更新，必须设置遍历函数的返回值，并赋值给data数据，才能触发视图更新
+                        // 注意此处赋值不要用list，而是使用data中的todoList。因为todoList加入了vue的响应式系统中（即data中），受监听，故在赋值时才会数据更新   
+                        todo.isDone = _this.selectall;
+                        return todo;
+                    });
+
+                    // console.log(_this.todoList)
+                },
+                edit: function (todo) {
+                    // this.$forceUpdate();//若不使用push()/set()则用此API手动触发视图更新
+                    todo.show_edit = true;
+                },
+                editCompleted: function (todo) {
+                    todo.show_edit = false;
+                    if (todo.edit_msg == '') {//编辑内容为空无效
+                        todo.edit_msg = todo.msg;
+                    }
+                    // console.log(this.edit_msg)
+                    todo.msg = todo.edit_msg;//内容更新
+                }
+            },
+            watch: {
+                todoList: function (newVal, oldVal) {//todo列表为空则不显示
+                    // alert()
+                    if (newVal.length == 0) {
+                        this.isNothing = false;
+                    } else {
+                        this.isNothing = true;
+                    }
+                },
+                todo_msg: function (newVal, oldVal) {//输入内容为空不能创建todo
+                    if (newVal == '') {
+                        this.write_btn = true;
+                    } else {
+                        this.write_btn = false;
+                    }
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>

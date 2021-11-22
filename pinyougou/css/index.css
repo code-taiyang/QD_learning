@@ -1,0 +1,419 @@
+/******************************顶部菜单******************************/
+.banner{
+    background-color: #f5f5f5;
+    line-height: 31px;
+}
+.banner .w .reg{
+   float: left;
+}
+.banner .w .menu-wrapper{
+    float: right;
+}
+/* .banner .w .menu{
+    list-style: none;
+} */
+.banner .w .menu li{
+    float: left;
+}
+/********************************搜素栏******************************/
+.header{
+    /* border: 1px red solid; */
+    height: 105px;
+    position: relative;
+}
+.header .logo{
+    float: left;
+    margin-top: 25px;
+}
+.header .search-wrapper{
+    display: inline-block;
+    margin-top: 25px;
+    margin-left: 173px;
+}
+.header .search{
+    overflow: hidden;
+}
+.header .search input{
+    float: left;
+    border: 2px #b1191a solid;
+    height: 32px;
+    width: 445px;
+    color: #cccccc;
+    padding-left: 10px;
+}
+.header .search input:focus{
+    outline: none;
+}
+.header .search button{
+    float: left;/*a和input都设置float以无缝拼接*/
+    border: 0px;
+    width: 82px;
+    height: 36px;
+    line-height: 36px;
+    background-color: #b1191a;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    cursor: pointer;/*鼠标置于按钮上变成手*/
+    outline: none;/*点击不会出现黑色轮廓*/
+}
+.header .search-wrapper .bottom-option a{
+    display: inline-block;
+    margin: 4px 10px;
+}
+.header .shopcar{
+    float: right;
+    margin-top: 25px;
+    margin-right: 64px;
+    border: 1px #dfdfdf solid;
+    background-color: #f7f7f7;  
+}
+.header .shopcar a{
+    display: inline-block;
+    line-height: 34px;
+    width: 138px;
+    text-align: center;
+}
+.header .shopcar a:hover{
+    color: black;
+    background-color: #dfdfdf;
+}
+/*********************************导航栏*****************************/
+.nav {
+    height: 45px;
+    border-bottom: 2px #b1191a solid;
+}
+.nav .w .dropdown {
+    float: left;
+    width: 209px;
+}
+.nav .w .dropdown .dt {
+    line-height: 45px;
+    text-align: center;
+    background-color: #b1191a;
+}
+.nav .w .dropdown .dt .sort_head {
+    color: white;
+    font-size: 16px;
+}
+.nav .w .dropdown .dd {
+    background-color: #c81623;
+}
+.nav .w .dropdown .dd li {
+    height: 31px;
+    /*不设置高度的话，li的高度会变成32(见实习记录10)*/
+    line-height: 31px;
+    padding-left: 10px;
+    /* margin-left: 1px; */
+    /* list-style: none; */
+    color: white;
+}
+.nav .w .dropdown .dd li:hover {
+    background-color: #fff;
+    color: #c81623;
+}
+.nav .w .dropdown .dd li:hover a {
+    color: #c81623;
+}
+.nav .w .dropdown .dd li a{
+    color: white;
+    font-size: 14px;
+}
+.nav .w .naveitem {
+    float: left;
+    margin-left: 10px;
+}
+.nav .w .naveitem a{
+    float: left;
+    padding: 0 25px;
+    font-size: 16px;
+    line-height: 45px;
+}
+/*********************************主页面******************************/
+.main{
+    margin-left: 219px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+/*
+注意：
+1. 因为album和side都是块元素，无论是否设置宽高/margin有无，性质就是强制独占一行
+2. 要块级元素同行排列，一般使将他们都在父盒子中浮动。
+3. 浮动时注意：因为上一部分的dropdown设置了浮动，即其脱离文档流。在album未浮动时需要用margin-left
+（dropdown宽度+10px）来控制位置，而浮动后，它们都脱离文档流了，故此时的margin-left会导致album多
+移动一个dropdown的宽度，进而使right-side栏无法和album并排。
+4.解决方法：
+    法a.将album的margin-left减去dropdown的宽度
+    法b.将album的margin-left交给父盒子main作为margin-left（或padding-left），因为父盒子仍在文档流
+    （父盒子用margin-left是因为其尺寸未定，为auto，可以直接设定margin而不会导致父盒子位移）
+*/
+.main .wrapper {
+    float: left;
+}
+.main .album {
+    position: relative;
+    /* float: left; */
+    width: 721px;
+    height: 455px;
+    overflow: hidden;
+}
+/*
+注意：
+例子中的图片是721px宽度(跟我的一样)，但是父容器宽度是720px(我的721)，溢出内容宽度1px并不会计算在宽度公式中
+故例子中的宽度公式是：
+219(margin-lift)+720(图片父容器)+250（右边栏）+margin-right（1px）+其他（10px，因为例子左右浮动后并未给右边栏设置margin-left，自动为10)=1200px
+故这会导致
+*/
+/*
+疑问：为什么上面的右边栏右浮动后，父盒子显示margin-left=291,宽度为980（720+10+250），即多出1px的margin-right
+我的设想应该是，右边栏浮动到容器最右边，即右边栏和图片间隔为11px.
+为什么会保留1px的margin-right
+*/
+/*
+问题已解决：
+1. 右边栏未移动到最右边是因为例子的父容器设定了尺寸980（已纠正），故一定会多出1px由边距
+2. 我的和例子的图片-右边栏间隔都是10，由于例子的图片父容器未设置overflow:hidden导致视觉上是例子的间隔比我小
+其实是溢出的图片遮挡了1px的间距，即实际上是右边栏和我的未对齐。
+*/
+.wrapper .album .imgs {
+    width: 5768px;
+    position: absolute;
+    /* left: 0px; */
+    right: -5047px;
+    transition: 0.3s;
+}
+.wrapper .album img {
+    float: left;
+    height: 455px;
+    width: 721px;
+    object-fit: cover;
+}
+
+.wrapper .album .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    /* display: block; */
+    width: 22px;
+    height: 32px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.wrapper .album #left_arrow{
+    background-image: url(../img/disabled-prev.png);
+    left: 20px;
+}
+.wrapper .album #right_arrow{
+    background-image: url(../img/disabled-next.png);
+    right: 20px;
+}
+.main .album .album_btn {
+    position: absolute;
+    left: 50px;
+    bottom: 10px;
+    /* list-style: none; */
+}
+.main .album .album_btn li {
+    float: left;
+    margin: 0 3px;
+}
+.main .album .album_btn li span {
+    display: block;/*换成inline-block时会导致li的大小和a不一致*/
+    background-color: rgba(255,255,255,.0);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px rgba(255, 255, 255, 0.5) solid;
+}
+.main .album .album_btn .btn_selected {/*当前图片按钮状态*/
+    background-color: #fff;
+    border: 2px white solid;
+}
+.main .right_side {/*右边容器*/
+    float: right;
+    width: 250px;
+    height: 455px;
+    margin-left: 10px;
+}
+.right_side .news_head {/*右边上方*/
+    height: 32px;
+    line-height: 32px;
+    padding: 0 15px;
+    border: 1px solid #cccccc;
+    border-bottom: 1px dotted #cccccc;
+}
+.news_head .title {     
+    font-size: 14px;
+}
+.news_head .more {
+    float: right;
+}
+.right_side .news {
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    border: 1px solid #cccccc;
+    border-top: none;
+}
+/* .right_side .news ul {
+    list-style: none;
+} */
+.right_side .news ul li {
+    margin-bottom: 5px;
+}
+.right_side .life_service {/*右边中间*/
+    border: 1px solid #cccccc;
+    overflow: hidden;
+    height: 209px;
+    border-top: none;
+}
+.right_side .life_service ul {
+    /* list-style: none; */
+    width: 252px;
+}
+.right_side .life_service li {
+    position: relative;
+    float: left;
+    height: 69px;
+    width: 62px;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+
+}
+.right_side .life_service li a {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    height: 100%;
+}
+.right_side .bargin {/*右下方*/
+    margin-top: 5px;
+}
+/*******************************今日推荐*******************************/
+.recommend {
+    height: 163px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+.recommend .recommend_head {
+    position: relative;/*子盒子垂直水平居中*/
+    float: left;
+    width: 200px;
+    height: 100%;
+    background-color: #5c5251;
+    text-align: center;
+}
+.recommend_head span {
+    display: block;
+    margin-top: 5px;
+    color: white;
+    font-size: 18px;
+}
+.recommend .recommend_items {
+    float: left;
+    height: 163px;
+    width: 1000px;
+    background-color: #ebebeb;
+}
+/*
+注意：
+这里由于需要li浮动，故不能对父容器使用.center的class属性，因为浮动和定位有冲突(定位元素不占据空间，浮动元素占据空间)
+一般都是定位先起作用。
+对于会脱离文档流的定位，将不会使float生效，反之是先定位生效再浮动
+
+纠正：
+上面说错了，浮动和定位是有冲突，但是是对同一个元素而言，li是子元素，并不会继承父元素的定位属性，故对父元素绝对定位是可以实现的
+上面说的失效问题是center中的位移问题，由于绝对定位的盒子宽高未设定，故其宽高自动被子元素撑开
+Y方向位移时，容器被强制下推到父盒子高度50%，由于容器内最低高度是不变的（图片的高度）故Y方向
+的定位跟正常一样
+X方向位移同理，但是容器目前未达到最低宽度，故在被强制左推时，由于relative定位的父容器宽度有限
+子容器超出父容器部分优先被迫减小宽度而不是overflow：hidden故减小宽度后，容器内容被迫换行
+导致X方向的位移结果和正常不一致
+最终导致.center的效果出问题
+*/
+.recommend_items ul{
+    /* list-style: none; */
+    margin-top: 10px;
+}
+.recommend_items ul li {
+    float: left;
+    width: 248px;
+    overflow: hidden;
+    margin-left: 1px;
+}
+.recommend_items li:not(:nth-last-of-type(1)) {
+    border-right: 1px #cccccc solid;
+}
+/*******************************页面尾部********************************/
+.footer {
+    background-color: #f5f5f5;
+    /* min-height: 500px; */
+    padding-bottom: 30px;
+}
+.footer .mod_service {
+    padding-top: 30px;
+    padding-bottom: 29px;
+    border-bottom: 1px solid #ccc;
+}
+.mod_service ul li {
+    float: left;
+    width: 240px;
+}
+.mod_service li i {
+    margin-left: 35px;
+}
+.mod_service li div {
+    float: left;
+    padding-left: 5px;
+}
+.mod_service li h5 {
+    margin: 5px 0;
+}
+
+.mod_help {
+    padding: 20px 50px 15px 50px;
+    border-bottom: 1px solid #ccc;
+
+}
+.mod_help .mod_help_item {
+    float: left;
+}
+.mod_help .mod_help_item:not(:nth-last-of-type(1)) {
+    margin-right: 124px;
+}
+.mod_help .mod_help_item p {
+    font-size: 16px;
+}
+.mod_help .mod_help_item li {
+    margin-top: 4px;
+}
+.mod_help .mod_helpcenter {
+    text-align: center;
+    margin-left: 120px;
+}
+.mod_help .mod_helpcenter img {
+    margin: 5px 0;
+}
+.mod_copyright {
+    width: 100%;
+}
+.mod_copyright .about {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.mod_copyright .about a:not(:nth-last-of-type(1))::after{
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 14px;
+    margin: 0px 3px;
+    vertical-align: middle;
+    background-color: #666666;
+}
+.mod_copyright .place {
+    text-align: center;
+}
+.mod_copyright .else {
+    text-align: center;
+}

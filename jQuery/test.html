@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text">
+        <button class="btn">点击</button>
+    </div>
+    <script>
+        function ajax(){
+            $.ajax({
+                type: "get",
+                url: "http://192.168.2.17:8016/admin/agent-info/excel?actived=&agentName=&current=1&endDate=&freezed=&id=&size=10&startDate=",/*url写异域的请求地址*/
+                success: function () {
+
+                }
+
+            });
+        }
+        $(".btn").on("click",ajax)
+        function cb(){
+            alert()
+        }
+    </script>
+</body>
+
+</html>

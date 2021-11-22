@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./vue-2.6.12/dist/vue.js"></script>
+    <title>Document</title>
+    <style>
+        .red{
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <child v-bind:post="post1"></child> -->
+        <child v-bind:post="post1" 
+               v-bind:post-font-size1="postFontSize1" 
+               @sum='sum'
+               @add-size='postFontSize1++'
+               @sub-size='postFontSize1--'
+               v-model='serachText'
+               class="red" data-title='这是外部传入的属性'></child>
+        父组件age数据：{{post1.age}}<br>
+        父组件postFontSize1:{{postFontSize1}}<br>
+        searchText:{{searchText}}
+    </div>
+    <script>
+
+        Vue.component('child', {
+            data: function(){
+                return {
+                    Name: this.post.name,//数据备份
+                    Age: this.post.age,
+                    Work: this.post.work,
+                    Msg: this.post.msg,
+                    fontsize: this.post.postFontSize,
+                };
+            },
+            props: ['post','postFontSize1','value'],
+            template: `
+                <div>
+                    <p>{{post.name}} is {{post.age}} years old , and he is a {{post.work}}</p>
+                    <button @click='post.age++'>addAge改变了父组件数据</button>
+                    <p>{{Name}} is {{Age}} years old , and he is a {{Work}}</p> 
+                    <button @click='Age++'>addAge不改变父组件数据</button>
+                    <p>
+                        <button @click="fontsize--">-</button>
+                        <span :style='{fontSize:fontsize+"px"}'>{{Msg}}</span>
+                        <button @click="fontsize++">+</button>
+                        fontSize:{{fontsize}}
+                    </p>
+                    <p>
+                        <button @click='$emit("sub-size")'>-</button>
+                        <span :style='{fontSize:postFontSize1+"px"}'>{{Msg}}</span>
+                        <button @click='$emit("add-size")'>+</button>
+                        postFontSize:{{postFontSize1}}
+                    </p>
+                    <button @click='emit'>num</button>
+                    <input v-bind:value="value" v-on:input="$emit('input',$event.target.value)"/>
+                </div>
+            `,
+            watch: {
+                Age : function(newVal,oldVal){
+                    if(newVal==24){
+                        this.Work = 'worker';
+                    }
+                },
+            },
+            methods: {
+                emit:function(){
+                    this.$emit("sum",this.postFontSize1);
+                }
+            }
+
+        });
+        new Vue({
+            el: '#app',
+            data: {
+                post1: {
+                    name: 'sy',
+                    work: 'student',
+                    isStudent: true,
+                    age: 20,
+                    id: '1709140118',
+                    msg: '测试内容',
+                    postFontSize: 14,
+                },
+                postFontSize1: 14,
+                searchText:'search',
+            },
+            methods: {
+                add1: function(num){
+                    alert(num)
+                    return num++;
+                },
+                sub1: function(num){
+                    return num--;
+                },
+                sum: function(num){
+                    alert(num)
+                },
+
+            }
+        });
+       
+        
+    </script>
+</body>
+
+</html>

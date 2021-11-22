@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue-2.6.12/dist/vue.js"></script>
+</head>
+<body>
+
+    <div id="app-a">
+        <comp-a :Title='title+">>"'></comp-a>
+        <!-- 不加v-bind传值表示给属性传入字符串 -->
+        <!-- 加v-bind传值表示给属性传js表达式、变量、数值(非字符串)-->
+        <comp-b :name='name'></comp-b>
+        <!-- <comp-c></comp-c>局部组件只能在对应实例中使用 -->
+    </div>
+    <div id="app-b">
+        <comp-a :title='title'></comp-a>
+        <!-- <comp-b></comp-b>全局组件可以在所有实例中使用 -->
+        <comp-c></comp-c>
+    </div>
+
+
+    <script>
+        Vue.component('comp-a',{
+            data:function(){
+                return{
+                    cnt:0,
+                    // title: 'a类组件',//title属性数据不会被调用
+                }
+            },
+            props: ['name','Title'],//属性值用于组件元素绑定实例的data
+            template: `
+            <button @click="cnt++">{{Title}}点击了{{cnt}}次</button>
+
+            `
+        });
+      
+
+        Vue.component('comp-b',{
+            data: function(){
+                return{
+                    cnt:0
+                }
+            },
+            // props:{name:'b类组件',title:''},
+            props:['name','title'],
+            template:`<button @click="cnt++">{{name}}点击了{{cnt}}次</button>`
+        });
+
+
+
+
+
+        var compC = {
+            data:function(){
+                return{
+                    cnt:0
+                }
+            },
+            props: ['name','title'],
+            template: `<button @click="cnt++">c类组件点击了{{cnt}}次</button>`
+        };
+        var vm = new Vue({
+            el: '#app-b',
+            data: {
+                title:'B区a类组件',
+            },
+            components: {
+                'comp-c': compC,
+            },
+        });
+
+
+
+
+
+
+        new Vue({
+            el:'#app-a',
+            data: {
+                title: 'A区a类组件',
+                name:'A区b类组件',
+            }
+        })
+    </script>
+</body>
+</html>

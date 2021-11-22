@@ -1,0 +1,119 @@
+.div {
+  height: 100px;
+  background-color: #666;
+}
+body {
+  content: "hello div";
+}
+div#div {
+  width: 200px;
+  height: 200px;
+  background-color: #666;
+  background-image: url("lunbotu/img/disabled-prev.png");
+  color: #999;
+  border-radius: 50% 50%;
+}
+div#div:hover {
+  background-color: darkorange;
+}
+.red,
+#red {
+  color: #111;
+}
+/*
+    父选择器{
+        属性：值
+        ...
+        子选择器1 {
+            属性：值
+            ..
+        }
+        子选择器2 {
+            属性：值
+            ..
+        }
+        ...
+        &:hover{..}
+        &+选择器{..}
+        ....
+        //注意：当嵌套选择器前加&时，该样式是加到父选择器上的
+        //&的含义相当于是祖先选择器，即重复一次祖先选择器名
+        //如：.class{ 属性1;&-A{属性2};&-B{属性3} }--->.class{属性1}   .class-A{属性2}  .class-B{属性3}
+        更多用法（仍以父选择器class为例）：
+        1. & + &-->.class + .class {..};
+        2. & &---->.class .class {..};
+        3. &&----->.class.class{..};//以上样式选择器很少这么用
+        4. &, &A-->.class,.classA{..}
+        //注意：&会重复所有的祖先选择器，即A{B{&,&-C{}}}x相当于A B,A B-C{..}
+        //注意：若有多个同一级祖先选择器（用逗号分隔），使用以上方法则会产生所有的两两匹配的选择器
+        //如：A,B的& + &--->A+B，A+A，B+A，B+B
+    }
+*/
+.button {
+  clear: both;
+}
+.button-ok {
+  background-image: url("ok.png");
+}
+.button-cancel {
+  background-image: url("cancel.png");
+}
+.button-custom {
+  background-image: url("custom.png");
+}
+#header a {
+  color: orange;
+  display: block;
+  border: 1px solid black;
+  background-color: grey;
+}
+#header a:hover {
+  background-color: white;
+}
+/*编译后即
+    #header a {
+      color: orange;
+      display: block;
+      border: 1px solid black;
+      background-color: grey;
+    }
+    #header a:hover {
+      background-color: white;
+    }
+  */
+/*
+    以上的封装好处在于能够像js对象那样引用其中的“方法”放入特定的css样式中
+    如：
+    #header a {
+      color: orange;
+      #bundle.button();  // 【还可以书写为 #bundle > .button 形式】
+    }
+  */
+/*
+    Less映射：同样类似于对象通过关联数组表达的方式
+    即通过上面的封装方法设计一个对象，其中包含定义好的变量（作为对象的键值对属性），以及Mixin（作为方法）
+    上面讲过对方法的引用，而映射即是对变量的引用
+    如下：
+    #colors() {
+      primary: blue;
+      secondary: green;
+    }
+
+    .button {
+      color: #colors[primary];//关联数组引用法
+      border: 1px solid #colors[secondary];
+    }
+  */
+/*
+    定义：
+    #selector(){
+      var1 : val1;
+      var2 : val2;
+      ...
+      .Mixin1{}
+      .Mixin2{}
+    }
+    调用：
+    #selector[var1]
+    #selector.Mixin1()
+  */

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue-2.6.12/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <comp-A></comp-A>
+        <comp-B></comp-B>
+    </div>
+
+
+    <script>
+        var bus = new Vue();
+        //也可以不新建实例，直接用子组件所在的根实例即可
+        //则emit和on可以改为this.$root.$emit/this.$root.$on
+
+
+        Vue.component('compA',{
+            data(){
+                return {
+                    msg: '组件A',
+                    cnt: 0,
+                    step: 10,
+                };
+            },
+            methods: {
+                handle(m){
+                    this.cnt += m;
+                },
+                trigger(){
+                    bus.$emit('event2',this.step);
+                },
+            },
+            mounted(){
+                bus.$on('event1',this.handle);//通讯中心绑定组件A的事件，当组件B触发事件A则调用组件A的处理函数，函数接收来自组件B的数据
+            },
+            template: `
+                <div>
+                    <button @click='trigger'>组件A：B+10</button>{{cnt}}
+                    //组件A通过DOM原生事件通过自己的trigger触发组件B的事件
+                    //同时向事件B的事件处理函数传入自己的step
+                </div>
+
+            `,
+        });
+        Vue.component('compB',{
+            data(){
+                return {
+                    msg: '组件B',
+                    cnt: 0,
+                    step: 20,
+                };
+            },
+            methods: {
+                handle(m){
+                    this.cnt += m;
+                },
+                trigger(){
+                    bus.$emit('event1',this.step);
+                },
+            },
+            mounted(){
+                bus.$on('event2',this.handle);
+            },
+            template: `
+                <div>
+                    <button @click='trigger'>组件B：A+20</button>{{cnt}}
+                </div>
+
+            `,
+        });
+        new Vue({
+            el: '#app',
+            data: {},
+            methods: {},
+        });
+    </script>
+</body>
+</html>

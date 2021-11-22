@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../Vue_test/vue-2.6.12/dist/vue.js"></script>
+    <style>
+        .fade {
+            opacity: .2;
+        }
+        .fade-enter-active {
+            transition: all 2.5s;
+        }
+        .fade-leave-active {
+            transition: all 1.5s;
+        }
+        .fade-enter {
+            opacity: 1;
+            color: red;
+            margin-left: 100px;
+        }
+        .fade-enter-to {
+            opacity: .3;
+            margin-top: 200px;
+        }
+        .fade-leave {
+            opacity: 1;
+        }
+        .fade-leave-to {
+            opacity: 0.1;
+            margin-left: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button v-on:click="show = true">
+            enter
+          </button>
+        <button v-on:click="show = false">
+            leave
+          </button>
+        <transition name='fade'>
+            <p class="fade" v-show='show'>这是一段过渡文字</p>
+        </transition>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                show: true,
+            },
+            methods: {},
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 1000px;
+    }
+    .mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 99999;
+      height: 100%;
+      width: 100%;
+      background-color: black;
+      opacity: 0.5;
+      /* 透明度兼容IE8 */
+      filter: Alpha(opacity=50);
+    }
+
+    .dialog {
+      position: fixed;
+      z-index: 99999;
+      top: 50%;
+      left: 50%;
+      /* transform: translate(-50%, -50%);兼容IE8，手动设置偏移 */
+      min-width: 300px;
+      max-width: 700px;
+      min-height: 200px;
+      overflow: hidden;
+      width: 600px;
+      border-radius: 14px;
+      background-color: #fff;
+      font-size: 16px;
+      font-family: Microsoft YaHei;
+      box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.3);
+      /* IE8阴影不好兼容 */
+    }
+
+    .close-icon {
+      position: absolute;
+      overflow: hidden;
+      width: 14px;
+      height: 14px;
+      top: 24px;
+      right: 26px;
+      cursor: pointer;
+    }
+
+    .line {
+      position: absolute;
+      border-radius: 1px;
+      top: 6px;
+      left: -2px;
+      height: 2px;
+      width: 18px;
+      background-color: #ccc;
+    }
+
+    .l-line {
+      transform: rotate(45deg);
+    }
+
+    .r-line {
+      transform: rotate(135deg);
+    }
+
+    .title {
+      padding: 20px 0 20px 30px;
+      color: #888;
+      border-bottom: 1px solid ;
+      border-bottom-color: rgba(83, 52, 52, 0.4);
+    }
+
+    .content {
+      color: black;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .content-txt {
+      display: inline-block;
+      text-align: justify;
+      margin: 0;
+    }
+
+    .btn-box {
+      margin-top: 30px;
+    }
+
+    .btn-box .button {
+      border: none;
+      outline: none;
+      width: 116px;
+      height: 36px;
+      font-size: 14px;
+      margin-right: 20px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-box .button:last-child {
+      margin-right: 0;
+    }
+
+    .cancel-btn {
+      color: #788694;
+      background-color: #EDF2F7;
+    }
+
+    .ok-btn {
+      color: #FFF;
+      background-color: #467AF2;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="btn">create</button>
+
+
+
+  <script>
+//     // IE8以下不支持bind方法，此处进行重写
+(function(){
+  if (!Function.prototype.bind) {
+        Function.prototype.bind = function (oThis) {
+          if (typeof this !== "function") {
+            throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+          }
+          var aArgs = Array.prototype.slice.call(arguments, 1),
+          fToBind = this,
+          fNOP = function () {},
+          fBound = function () {
+            return fToBind.apply(this instanceof fNOP && oThis
+            ? this
+            : oThis,
+            aArgs.concat(Array.prototype.slice.call(arguments)));
+          };
+          fNOP.prototype = this.prototype;
+          fBound.prototype = new fNOP();
+          return fBound;
+      };
+    }
+}());
+  </script>
+
+  <script src="./dialog.js"></script>
+  <script>
+    var btn = document.querySelector('.btn');
+    var myname = 'sy';
+    var flag = true;
+    var dialog = Dialog.create({ 
+        title: '删除报告',
+        content: '<input type="text" class="" value="123" />',
+        template: ['用户名：','<input type="text" class="name" value="sy">'],
+        asyncOk: true,
+        loadingAnimation: true,
+        onOk: function (e,dialog) { 
+          if(flag){
+            flag = false;
+            var userName = dialog.dialogDiv.querySelector('.name').value;
+            setTimeout(function(){
+              flag = true;
+              console.log(myname + '异步点击了确定按钮',e);
+              alert('提交成功！用户名为：'+userName);
+              dialog.close();
+            }, 10000);
+          }
+        }, 
+      });
+    btn.addEventListener('click', function () {
+      console.log('Dialog.create() :>> ', dialog);
+      dialog.open();
+    }.bind(btn));
+    // 若出现按钮被重写的情况，按钮绑定实例的
+    var input = dialog.dialogDiv.querySelector('.name');
+      input.addEventListener('blur', function(e){
+        alert('在弹窗外绑定事件：value = '+e.target.value)
+      });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+.login-wrapper {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    margin-left: 180px;
+    width: 360px;
+    height: 476px;
+    color: #999;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+    background-color: #fff;
+}
+.login-wrapper .login-option {
+    display: table;
+    text-align: center;
+    width: 90%;
+    margin: 0 auto;
+    color: #666;
+    border-bottom: 1px solid #e3e3e3;
+}
+.login-option .option {
+    display: inline-block;
+    padding: 15px 10px;
+    margin: 0 25px;
+    cursor: pointer;
+}
+.option-active {
+    color: #3e8bdb; 
+    font-weight: bold;
+    border-bottom: 2px #3e8bdb solid;
+}
+/* 微信登录模块 */
+.login-wrapper .wx-wrapper {
+    padding-top: 50px;
+    text-align: center;
+}
+.wx-wrapper .login-qrcode {
+    margin: 20px 0;
+    width: 176px; 
+    height: 176px;
+    cursor: pointer;
+    overflow: hidden;
+}
+/* 账号登录模块 */
+.user-wrapper {
+    display: none;
+    width: 90%;
+    margin: 30px auto 0;
+    font-size: 14px;
+}
+.user-wrapper .login2 {
+    display: none;
+}
+.user-wrapper .hint-wrapper {
+    margin: 15px 0 5px;
+}
+.user-wrapper .hint {
+    display: inline-block;
+    font-weight: bold;
+    color: #666;
+}
+.user-wrapper .forget {
+    cursor: pointer;
+}
+.user-wrapper .forget:hover {
+    text-decoration: underline;
+}
+.user-wrapper .input {
+    box-sizing: border-box;
+    padding-left: 20px;
+    width: 100%;
+    height: 38px;
+    line-height: 38px;
+    font-size: 16px;
+    color: #666;
+    border-radius: 4px;
+    border: 1px solid #e3e3e3;
+    background-color: #fcfcfc;
+}
+.user-wrapper .v-code-wrapper {
+    position: relative;
+}
+.user-wrapper .get-v-code {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+/* 设置placeholder样式 */
+input::-webkit-input-placeholder{
+    color: #999;
+    font-size: 14px;
+}
+
+.user-wrapper .cookie {
+    margin: 10px 0 15px;
+}
+/***************提交按钮样式*****************/
+.submit-btn {
+    width: 100%;
+    height: 40px;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 15px;
+    background-color: #2489f2;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+.submit-btn:hover {
+    background-color: #2281e6;
+}
+/********************************************/
+
+.cookie .checkbox {
+    display: inline-block;
+    vertical-align: middle;
+    width: 14px;
+    height: 14px;
+    overflow: hidden;
+    background-image: url(../icons/check.png);
+}
+.cookie .auto-login {
+    cursor: pointer;
+}
+.unchecked {
+    background-position: 0 -14px;
+}
+/* 表单选项透明 */
+#auto-login {
+    opacity: 0;
+}
+.cookie .pass-login {
+    display: none;
+}
+.cookie .login {
+    color: #2281e6;
+    cursor: pointer;
+}
+.cookie .login:hover {
+    text-decoration: underline;
+}
+
+
+
+/*第三部分*/
+.login-wrapper .other {
+    font-size: 14px;
+    margin-top: 25px;
+    line-height: 2;
+    text-align: center;
+}
+.other .register {
+    margin-bottom: 10px;
+}
+.register-now a {
+    color: #3e8bdb;
+    text-decoration: underline;
+}
+.other .other-text {
+    display: inline-block;
+    vertical-align: middle;
+}
+.other .login-icon {
+    display: inline-block;
+    vertical-align: middle;
+    height: 18px;
+    margin: 0 5px;
+}
+.other .qq-login .qqicon {
+    width: 16px;
+    background-image: url(../icons/qq.png);
+}
+.other .wb-login .wbicon {
+    width: 21px;
+    background-image: url(../icons/weibo.png);
+}

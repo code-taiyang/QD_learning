@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue-2.6.12/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <button v-for='comp in comps' :key='comp' @click='currentComp=comp'>{{comp}}</button>
+        <keep-alive><component v-bind:is='currentComp'></component></keep-alive>
+    </div>
+
+
+
+
+
+    <script>
+        var comps = ['my-comp1','my-comp2'];
+        var compsSon = ['son-comp1','son-comp2','son-comp3'];
+        Vue.component('my-comp1', {
+            data : function(){
+                return {
+                    compsSon:compsSon,
+                    currentCompSon:compsSon[0],
+                }
+            },
+            props: [],
+            template: `
+                <div>
+                    <p>comp1</p>
+                    <button v-for='son in compsSon' :key='son' @click='currentCompSon=son'>{{son}}</button>
+                    <component v-bind:is='currentCompSon'></component>
+                </div>
+            `,
+        });
+        Vue.component('my-comp2', {
+            props: [],
+            template: `
+                <div>
+                    <p>comp2</p>
+                </div>
+            `,
+        });
+        Vue.component('son-comp1', {
+            props: [],
+            template: `
+                <div>
+                    <p>son-comp1</p>
+                </div>
+            `,
+        });
+        Vue.component('son-comp2', {
+            props: [],
+            template: `
+                <div>
+                    <p>son-comp2</p>
+                </div>
+            `,
+        });
+        Vue.component('son-comp3', {
+            props: [],
+            template: `
+                <div>
+                    <p>son-comp3</p>
+                    <input/>
+                </div>
+            `,
+        });
+
+        
+       
+        new Vue({
+            el: '#app',
+            data: {
+                comps:comps,
+                currentComp:comps[0],
+                
+            },
+            computed: {
+
+            }
+        });
+    </script>
+</body>
+
+</html>

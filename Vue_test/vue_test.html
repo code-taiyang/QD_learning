@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+    <style>
+        body {
+            height: 5000px;
+        }
+
+        .div {
+            background-color: bisque;
+            width: 200px;
+            height: 200px;
+            padding: 45px;
+            border: 5px solid #bfa;
+            margin: auto;
+            margin-top: 1200px;
+            text-align: center;
+            line-height: 200px;
+        }
+
+        .box {
+            position: relative;
+            /* top: 50px; */
+            left: 150px;
+            opacity: 0;
+            transition: top 1s, left 1s, opacity 1s;
+        }
+
+        .show {
+            opacity: 1;
+            top: 0;
+            left: 0;
+            transition: top 1s, left 1s, opacity 1s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <button @click='toggleClass("box","show")'>click me</button>
+        <div class="div box" @scroll='getInfo' ref='box'>显示文字</div>
+    </div>
+
+    <script>
+
+
+        new Vue({
+            el: '#app',
+            data: {},
+            methods: {
+                getInfo() {
+                    let info = this.$refs.box.getBoundingClientRect();
+                    console.log(info.top)
+                    let clientHeight = this.getClientHeight();
+                    if(info.top <= clientHeight){
+                        this.addClass("box","show");
+                    }
+                    if(info.top<0||info.top>800){
+                        this.removeClass('box','show');
+                    }
+                    
+                },
+                addClass(elRef, name) {
+                    this.$refs[elRef].classList.add('show')
+                    // console.log(this.$refs[elRef].classList);
+                },
+                removeClass(elRef, name) {
+                    this.$refs[elRef].classList.remove('show')
+                    // console.log(this.$refs[elRef].classList);
+                },
+                toggleClass(elRef, name) {
+                    this.$refs[elRef].classList.toggle('show')
+                    // console.log(this.$refs[elRef].classList);
+                },
+                getClientHeight() {
+                    let clientHeight = 0
+                    if (document.body.clientHeight && document.documentElement.clientHeight) {
+                        clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight)
+                    } else {
+                        clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight)
+                    }
+                    return clientHeight
+                }
+            },
+            mounted() {
+                document.addEventListener('scroll', this.getInfo)
+            },
+        });
+    </script>
+</body>
+
+</html>

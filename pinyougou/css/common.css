@@ -1,0 +1,122 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    min-height: 1200px;
+    font: 12px/1.5 'Microsoft YaHei', 'Heiti SC', tahoma, arial, 'Hiragino Sans GB', \\5B8B\4F53, sans-serif;
+    color: #666666;
+}
+.style-red{
+    color: #c81623;
+}
+.separtor{/*分割横向列表的小竖线*/
+    width: 1px;
+    height: 12px;
+    margin: 12px;
+    margin-top: 9px;
+    margin-bottom: 0;
+    background-color: #666666;
+
+}
+.w{/*页面主要内容固定1200宽度*/
+    margin: auto;
+    width: 1200px;
+}
+a{
+    color: #666666;
+    text-decoration: none;
+}
+a:hover{
+    color: #e33333;
+}
+ul {
+    list-style: none;
+}
+.clearfix::before,
+.clearfix::after{/*清除浮动(网上有个类似的？)*/
+    content: "";
+    display: table;
+    clear: both;
+}
+.center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+/*rightside栏中的图标*/
+.rightside_icon {
+    position: relative;
+    display: block;
+    width: 25px;
+    height: 25px;
+    margin: 10px auto;
+    overflow: hidden;
+    background: url(../img/icons.png);
+}
+.rightside_icon_1 {
+    background-position: -17px -16px;
+}
+.rightside_icon_2 {
+    background-position: -79px -16px;
+}
+.rightside_icon_3 {
+    background-position: -140px -16px;
+}
+.rightside_icon_4 {
+    background-position: -206px -16px;
+}
+.rightside_icon_5 {
+    background-position: -16px -86px;
+}
+.rightside_icon_6 {
+    background-position: -78px -86px;
+}
+.rightside_icon_7 {
+    background-position: -140px -86px;
+}
+.rightside_icon_8 {
+    background-position: -206px -86px;
+}
+.rightside_icon_9 {
+    background-position: -17px -159px;
+}
+.rightside_icon_10 {
+    background-position: -78px -159px;
+}
+.rightside_icon_11 {
+    background-position: -140px -157px;
+}
+.rightside_icon_12 {
+    background-position: -206px -159px;
+}
+.discount::after {
+    content: url(../img/jian.jpg);
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+/*footer中的图标*/
+.mod_icon {
+    float: left;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    background-image: url('../img/icons.png');
+}
+.mod_icon_1 {
+    background-position: -253px -3px;
+}
+.mod_icon_2 {
+    background-position: -255px -54px;
+}
+.mod_icon_3 {
+    background-position: -257px -106px;
+}
+.mod_icon_4 {
+    background-position: -258px -157px;
+}
+.mod_icon_5 {
+    background-position: -258px -209px;
+}

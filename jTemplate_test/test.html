@@ -1,0 +1,396 @@
+<textarea class="template" id="tplList" style="display:none">
+    <div class="address" data-coupon="{$T.couponBusinessType}" data-needpoints="{$T.needPoints}"
+         data-edition="{$T.edition}">
+      <a href="/member_new/thesis/post.aspx">提交论文</a> <em>></em> {$T.editionDesc}
+    </div>
+    <div class="wrap_86 pt-20 submit-yw">
+      <div class="form">
+        <!--  基本信息 -->
+        <div class="item ">
+          <h3>查重信息</h3>
+            <div class="item-new">
+          <div class="info info-new flexRow">
+            <p style="display: inline-flex;position: relative">检测版本：{$T.editionDesc}
+              {#if $T.edition!='-1'}
+                <span class="recommend-s limitedFree" id="_limitedFree"
+                      style="display: none;margin-left: 8px;position: relative">限时免费</span>
+              <span id="freeT" style="display: none"><span id="endFree"style="padding-left: 20px;line-height: 43px;">距结束免费
+                  <span id="hour1"></span><span>时</span>
+                  <span id="minute1"></span><span>分</span>
+                  <span id="second1"></span><span>秒</span></span></span>
+                {#/if}
+              </p>
+            <p>题目：{$T.title}</p>
+            <p>字符数：{$T.wordCount}字符 <em class="c-999">（不计空格）</em></p>
+          </div>
+            <input type="hidden" id="lastWordCount" value="{$T.wordCount}"/>
+          <div class="select-box">
+                     <div class="select-list">
+
+                          <span>学校系统：</span>
+                          <select class="rule-select" id="rule_select_12">
+                              <option value="-1">选择</option>
+                                <option value="13">知网</option>
+                                <option value="14">维普</option>
+                                <option value="15">万方</option>
+                                <option value="16">其它</option>
+                         </select>
+
+                      </div>
+          </div>
+      </div>
+        {#if $T.edition!='10'}
+       <div class="item " style="position: relative;">
+          <h3>选择降重版本</h3>
+          <div class="info clearfix info11">
+            {#foreach $T.normalAddServiceConfigs as record}
+
+                {#if $T.record.pcState}
+              {#if $T.record.serviceType =='reduce'}
+                <div class="reduce-new-middle new-middle new-middle1 new-middle2 {#if $T.record.isFree || $T.record.checked }new-middleon{#/if}"
+                     {#if $T.record.isFree}gift="true" {#/if} id="{$T.record.code}" {#if $T.record.couponBusinessType}type="{$T.record.couponBusinessType}"{#/if} data-price="{$T.record.points}" data-id="{$T.record.id}" data-mold="{$T.record.serviceType}">
+
+                  {#if $T.record.discount != 10}
+                    <div class="recommend-s">限时{$T.record.discount}折</div>
+                  {#/if}
+                  <input name="{$T.record.code}_m" value="{#if $T.record.isFree}0{#else}{$T.record.points}{#/if}"
+                         type="hidden">
+                  <input name="{$T.record.code}_val" value="0" type="hidden">
+              <!--  <div class="middle-img"><img src="https://staticxin.paperyy.com/static/images/img-middle{$T.record.logo}.png?20201130" /></div>
+                -->
+                  <div class="middle-p middle-p2">
+
+                      <p><span>{$T.record.name}</span>
+                         {#if $T.record.isRecommend}
+                      <span class="recommend-s recommend-s2">荐</span>
+                       {#/if}
+                       <img src="https://staticxin.paperyy.com/static/images/qs.png?20201130" class="qs-jm-2 img-hover">
+
+                    </p>
+
+                    <p class="p2">{$T.record.unitText}</p>
+                  </div>
+                  {#if $T.record.isFree}
+                    <div class="middle-check2">
+                      <p class="for-free"></p>
+                    </div>
+                    {#else}
+                      <div class="middle-check">
+                        <div class="mulity curreny" id="priovid6"></div>
+                      </div>
+                  {#/if}
+               <div class="middle-p">
+               <p class="p3">{$T.record.textDescription}</p>
+               </div>
+                  <div class="hover-p hover-p-no hover-{$T.record.code}">
+                    <p>{$T.record.textDescription}</p>
+                  </div>
+                </div>
+            {#/if}
+              {#/if}
+            {#/for}
+
+        </div>
+        <input type="hidden" id="queryId" value="1189099901">
+        <input type="hidden" id="subType" value="">
+        <!-- 附加查重系统 -->
+
+
+        </div>
+         {#/if}
+                <!-- 增值服务 -->
+        <div class="item" style="position: relative;">
+          <h3>选择增值服务</h3>
+             <div class="middle-check Cancel-all1 ">
+            <div class="mulity curreny Cancel-all-curreny"></div><span class="Cancel-all-zz">全部取消</span>
+        </div>
+          <div class="info clearfix info11">
+            {#foreach $T.normalAddServiceConfigs as record}
+              {#if $T.record.pcState}
+               {#if $T.record.serviceType !='reduce'}
+                <div class="new-middle new-middle1 add-service-middle {#if $T.record.isFree || $T.record.checked }new-middleon{#/if}"
+                     {#if $T.record.isFree}gift="true"{#else} gift="false"{#/if} id="{$T.record.code}" {#if $T.record.couponBusinessType}type="{$T.record.couponBusinessType}"{#/if} data-price="{$T.record.points}" data-id="{$T.record.id}" data-mold="{$T.record.serviceType}">
+                  {#if $T.record.isRecommend}
+                    <div class="recommend-s">推荐</div>
+                  {#/if}
+                  {#if $T.record.discount != 10}
+                    <div class="recommend-s">限时{$T.record.discount}折</div>
+                  {#/if}
+                  <input name="{$T.record.code}_m" value="{#if $T.record.isFree}0{#else}{$T.record.points}{#/if}"
+                         type="hidden">
+                  <input name="{$T.record.code}_val" value="0" type="hidden">
+              <!--  <div class="middle-img"><img src="https://staticxin.paperyy.com/static/images/img-middle{$T.record.logo}.png?20201130" /></div>
+                -->
+                  <div class="middle-p">
+                    <p>{$T.record.name}
+                      <img src="https://staticxin.paperyy.com/static/images/qs.png?20201130" class="qs-jm-2 img-hover">
+                    </p>
+                    <p>{$T.record.unitText}</p>
+                  </div>
+                  {#if $T.record.isFree}
+                    <div class="middle-check2">
+                      <p class="for-free"></p>
+                    </div>
+                    {#else}
+                      <div class="middle-check">
+                        <div class="mulity curreny" id="priovid6"></div>
+                      </div>
+                  {#/if}
+                  <div class="hover-p hover-p-no hover-{$T.record.code}">
+                    <p>{$T.record.description}</p>
+                  </div>
+                </div>
+              {#/if}
+            {#/if}
+            {#/for}
+          </div>
+                <!--    {#if $T.deepCheckDesc != ''}
+                        <div style="color:#999999;font-size: 14px;margin-left: 30px;">
+                           <img src="https://staticxin.paperyy.com/static/images/qs.png" alt="" style="margin-right: 10px">
+                           {$T.deepCheckDesc}
+                        </div>
+                    {#/if}-->
+          {#if $T.userCouponVos.length== 0 && freeUP != 1 && 1==2}
+          <div class="recommend">
+            <div class="txt">根据您的选择，为您个性化推荐：</div>
+            <div class="recommendBox" id="personalRecommend" name="冲关助力包"
+                 services="bigan_check,ppt,word_check,speed_check,smart_reduce" price="256" sell_price="76.8"
+                 title="查重+智能版降重+笔杆查重+答辩PPT（100个）+论文纠错+极速检测">
+              <input type="hidden" name="personalRecommend_sell_price" value="76.8"/>
+              <input type="hidden" name="personalRecommend_rec_val" value="true"/>
+              <div class="tips">冲关助力,3折优惠</div>
+              <div class="title">冲关助力包:{$T.editionDesc}查重+智能版降重+笔杆查重+答辩PPT（100个）+论文纠错+极速检测</div>
+              <div class="check">
+                    <span>一份价钱，三份报告</span>
+                    <span>超值优惠</span>
+                <div class="price">附加查重系统
+                  <label>76.8元</label>
+                  <del>256元</del>
+                  <div class="mulity curreny"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hint">*积分不参与本活动抵扣</div>
+                <!-- ./end of recommend -->
+          {#/if}
+</div>
+{#if $T.edition!='10'}
+<div class="item" style="position: relative;">
+    <h3>附加查重系统
+        <!--<span class="xt-bt">多个查重系统，多个查重算法，一次查更省钱</span>--></h3>
+    <div class="middle-check Cancel-all Cancel-allon">
+        <div class="mulity curreny Cancel-all-curreny"></div>
+        <span class="Cancel-all-wz">全部取消</span>
+    </div>
+    <div class="info clearfix info-xt fjxt info11">
+        <div class="new-middle-xt new-middleon-xt" id="kind_id_13123123123123"
+             data-id="13123123123123" data-save-unit="1"
+             data-save-unit-price="500"
+             data-save-unit-type="1"><!-- new-middleon-xt 标识选中 --> 
+             <input name="kind_13123123123123_val" value="13123123123123" type="hidden">
+            <input name="unit_13123123123123_m" value="15" type="hidden">
+            <!--   <div class="middle-img"><img src="https://staticxin.paperyy.com/static/images/img-middle-u.png?20201130"></div>
+              -->
+            <div class="middle-p middle-p-new">
+                <p>
+                    <span style="font-weight: 400;display: table-cell;text-align: left;font-size: 15px;">高校版</span>
+                    <span class="unit-price" style="display: table-cell;text-align: right;">15元/篇</span>
+                </p>
+                <p class="m-p-t">适用于学校使用vp，wf，zw等学术系统的论文。</p>
+            </div>
+            <div class="middle-check">
+                <div class="mulity curreny" id="kind_13123123123123"></div>
+            </div>
+        </div>
+        <div class="new-middle-xt new-middleon-xt" id="kind_id_13123123123125"
+             data-id="13123123123125" data-save-unit="1000"
+             data-save-unit-price="1.8"
+             data-save-unit-type="2"><!-- new-middleon-xt 标识选中 -->
+            <input name="kind_13123123123125_val" value="13123123123125" type="hidden">
+            <input name="unit_13123123123125_m" value="5" type="hidden">
+            <!--   <div class="middle-img"><img src="https://staticxin.paperyy.com/static/images/img-middle-p.png?20201130"></div>
+              -->
+            <div class="middle-p middle-p-new">
+                <p>
+                    <span style="font-weight: 400;display: table-cell;text-align: left;font-size: 15px;">PP系统</span>
+                    <span class="unit-price" style="display: table-cell;text-align: right;">5元/篇</span>
+                </p>
+                <p class="m-p-t">适合本科较为严格的对比。</p>
+            </div>
+            <div class="middle-check">
+                <div class="mulity curreny" id="kind_13123123123125"></div>
+            </div>
+        </div>
+        <div class="new-middle-xt new-middleon-xt" id="kind_id_13123123123127"
+             data-id="13123123123127" data-save-unit="1000"
+             data-save-unit-price="1.5"
+             data-save-unit-type="2"><!-- new-middleon-xt 标识选中 -->
+            <input name="kind_13123123123127_val" value="13123123123127" type="hidden">
+            <input name="unit_13123123123127_m" value="10" type="hidden">
+            <!--   <div class="middle-img"><img src="https://staticxin.paperyy.com/static/images/img-middle-s.png?20201130"></div>
+              -->
+            <div class="middle-p middle-p-new">
+                <p>
+                    <span style="font-weight: 400;display: table-cell;text-align: left;font-size: 15px;">严格版</span>
+                    <span class="unit-price" style="display: table-cell;text-align: right;">10元/篇</span>
+                </p>
+                <p class="m-p-t">针对论文的原创度要求较高。</p>
+            </div>
+            <div class="middle-check">
+                <div class="mulity curreny" id="kind_13123123123127"></div>
+            </div>
+        </div>
+        <div class="new-middle-xt new-middleon-xt" id="kind_id_13123123123126"
+             data-id="13123123123126" data-save-unit="1000"
+             data-save-unit-price="1.5"
+             data-save-unit-type="2"><!-- new-middleon-xt 标识选中 -->
+            <input name="kind_13123123123126_val" value="13123123123126" type="hidden">
+            <input name="unit_13123123123126_m" value="3" type="hidden">
+            <!--   <div class="middle-img"><img src="https://staticxin.paperyy.com/static/images/img-middle-f.png?20201130"></div>
+              -->
+            <div class="middle-p middle-p-new">
+                <p>
+                    <span style="font-weight: 400;display: table-cell;text-align: left;font-size: 15px;">PF系统</span>
+                    <span class="unit-price" style="display: table-cell;text-align: right;">3元/篇</span>
+                </p>
+                <p class="m-p-t">适用于参考互联网内容比较多的论文。</p>
+            </div>
+            <div class="middle-check">
+                <div class="mulity curreny" id="kind_13123123123126"></div>
+            </div>
+        </div>
+
+    </div>
+        <div class="fjxttip"><img src="https://staticxin.paperyy.com/static/images/qs.png?20201130" style="margin-right: 10px">
+               选择<span id="editionKindCount">0</span>个系统，一共为您节约<span id="editionKindSaveMoney">0元</span>，选择更多系统，能省更多。多个系统一次搞定，不用到处跑。
+        </div>
+</div>
+{#/if}
+
+
+<div class="item" style="overflow: hidden;padding-left:0px">
+<h3 style="position: relative;" class="h3-charge">使用卡券/积分<!--<i class="img-charge">--></i>
+    <span class="add-more"></span>
+    {#if $T.edition !='-1' && $T.userIntegral > 0}
+
+    <span class="integral-no-show" style="float: right;color: #999999;font-weight: normal;display: none;"
+          id="integral_span">
+                  积分可抵扣{#if $T.wordCount > ($T.userIntegral / $T.integralDeductionUnit)}{parseInt($T.userIntegral/$T.integralDeductionUnit)}{#else}{$T.wordCount}{#/if}字
+                </span>
+    {#else}
+    {#if $T.userCouponVos.length == 0}
+    <p id="integral_p"
+       style="display: none;color: #666666;font-size: 14px;font-weight: normal;position: absolute;right: 0;top: 0;">
+        找不到可抵扣的卡券，<a href="/member_new/recharge/buyPack.aspx" target="_blank"
+                     style="color: #3e8bdb;text-decoration: underline;">立即选购</a>
+    </p>
+    {#/if}
+    {#/if}
+    {#if $T.edition !='-1' && $T.userCouponVos.length > 0 && $T.userIntegral == 0}
+    <a href="/member_new/free" target="_blank" id="integral_a"
+       style="float: right;font-weight: normal;color: #3e8bdb;text-decoration: underline;display: none;">
+        免费获取抵扣券/积分
+    </a>
+    {#/if}
+</h3>
+<div class="new-chargeshow" style="display: block;">
+    {#foreach $T.userCouponVos as record}
+    {#if $T.record.fbusinessType == $T.couponBusinessType }
+    <div class="integral coupons integral-new" type="coupon" id="{$T.record.userCouponId}"
+         nocancel="{$T.record.fBusinessType == 1}" btype="{$T.record.fBusinessType}"
+         data-id="{$T.record.userCouponId}" data-type="{$T.record.fBusinessType}">
+        <input type="hidden" name="{$T.record.userCouponId}_type" value="{$T.record.fBusinessType}"/>
+        <input type="hidden" name="{$T.record.userCouponId}_m" value="0" class="m_{$T.record.fBusinessType}"/>
+        <input type="hidden" name="{$T.record.userCouponId}_c" value="{$T.record.fCouponReductionType}"
+               class="c_{$T.record.fBusinessType}"/>
+        <input type="hidden" name="{$T.record.userCouponId}_f" value="{$T.record.fAmount}"
+               class="f_{$T.record.fBusinessType}"/>
+        {#if $T.record.fCouponReductionType =='1'}
+        <div class="change-cp">{$T.record.fName}</div>
+        {#/if}
+        {#if $T.record.fCouponReductionType =='0'}
+        <div class="change-cp">{$T.record.fName}{$T.record.fAmount}元</div>
+        {#/if}
+        <div class="set-meal">
+            <p><span>[{$T.record.fSource}]</span>{$T.record.fValidityTimeText || '不限时间'}</p>
+        </div>
+        <div class="middle-check-new">
+            <div class="mulity curreny"></div>
+        </div>
+    </div>
+    {#/if}
+    {#/for}
+    <!-- 积分抵扣 -->
+    {#if $T.edition !='-1' && $T.userIntegral > 0}
+    <div class="integral integral-no-show integral-new" type="integral" btype="">
+        <input name="integral_m" type="hidden" value="{$T.needPointsByIntegral}"/>
+        <div class="change-cp change-new" style="display: inline-flex;width: 100%">{$T.userIntegral}积分
+            <div class="set-meal">
+                <p>（可抵扣{#if $T.wordCount > ($T.userIntegral / $T.integralDeductionUnit)}{parseInt($T.userIntegral /
+                    $T.integralDeductionUnit)}{#else}{$T.wordCount}{#/if}字）</p>
+            </div>
+        </div>
+        <div class="change-new">
+            <a href="/member_new/free" style="color: #F5602A;" target="_blank">获取积分</a>
+        </div>
+        <div class="middle-check-new">
+            <div class="mulity curreny"></div>
+        </div>
+
+    </div>
+    {#/if}
+    {#if $T.userCouponVos.length > 0 && $T.userIntegral == 0}
+    <div style="display: none;" id="buypack_tab">
+        <p>找不到可抵扣的卡券，<a href="/member_new/recharge/buyPack.aspx" target="_blank"
+                        style="color: #3e8bdb;text-decoration: underline;">立即选购</a></p>
+    </div>
+    {#/if}
+</div>
+</div>
+<div class="item" style="padding-left:0px;padding-top: 45px;">
+<h3>结算费用</h3>
+<ol class="info submit-yw-ol">
+    <li class="clearfix">
+        <div class="hd fl">总费用：</div>
+        <div class="bd fl bd1"><b id="sum_money">1.5</b>Y元</div>
+        <div class="fl qs-box">
+            <em class="qs"></em>
+            <dl class="cost-breakdown fl" id="consume_info">
+            </dl>
+        </div>
+    </li>
+    <li class="clearfix">
+        <div class="hd fl">使用卡券：</div>
+        <div class="bd fl bd1">-<b id="pack_money">0</b>Y元</div>
+    </li>
+    <li class="clearfix">
+        <div class="hd fl">使用积分：</div>
+        <div class="bd fl bd1">-<b id="integral_money">0</b>Y元</div>
+    </li>
+    <li class="clearfix bg">
+        <div class="hd fl">应付总额</div>
+        <div class="bd fl bd1">
+            <em class="c-orange mr-10"><b class="fs-18" id="need_money">1.5</b>Y元</em>
+            （账户余额：<em class="c-orange" id="user_points"><b>0</b>Y元</em>）
+        </div>
+    </li>
+</ol>
+</div>
+<div class="tc pb-20">
+{#if $T.isFree !=1 }
+<div class="c-red middle tip"><i class="icon-th-orange"></i><em>您今日的免费查重次数已用完，<a
+        href="/member_new/recharge/membership.aspx" target="_blank" style="color:#2489f2;">开通会员不限免费查重次数</a></em>
+</div>
+{#else}
+<div class="c-red middle tip" style="display: none;" id="nomoney"><i class="icon-th-orange"></i><em>账户余额不足</em>
+</div>
+<input type="button" value="支  付" class="btn btn-orange" pay="true" id="submitPay"/>
+{#/if}
+</div>
+</div>
+</div>
+<div class="pay-guangg" style="margin-top: 10px;">
+<img src="https://staticxin.paperyy.com/static/images/paymentguanggao.png?20201130">
+</div>
+</textarea>

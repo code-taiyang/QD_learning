@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue-2.6.12/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+       <book-list :books='books' v-model='booklist' ></book-list>
+        预购：{{booklist}}
+    </div>
+    <script>
+        Vue.component('book-list',{
+            model:{
+                prop:'checked',
+                event:'change'
+            },
+            props:['books','checked'],
+            template:`
+                <ul class='book_list'>
+                    <li v-for='book in books' :key='book.id'>
+                        <input type='checkbox' :value="book.name" :checked='checked' @click='$emit("change",book.name)'/>{{book.name}}:￥{{book.price}}    
+                    </li>
+                </ul>
+            `,
+            methods: {
+                getName: function(book){
+                    console.log(book.name)
+                }
+            },
+        });
+        new Vue({
+            el: '#app',
+            data: {
+                input_msg: 'input something...',
+                books:[
+                    {id:1, name:'红楼梦', price: 15},
+                    {id:2, name:'三国演义', price: 20},
+                    {id:3, name:'水浒传', price: 25},
+                    {id:4, name:'西游记', price: 30},
+                ],
+                booklist:[],
+            },
+            methods: {
+                // showList: function(value){
+                //     this.booklist.push(value);
+                // }
+            },
+        });
+    </script>
+</body>
+</html>

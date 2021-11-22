@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title>上传文件</title>
+    <script src="./jQuery/jquery.min.js"></script>
+</head>
+<style>
+    div {
+        border: 1px solid black;
+        margin: 10px 20px 30px 40px;
+    }
+</style>
+
+<body>
+    <div name="single" style="text-align: center; ">
+        <A class=btn_addPic href="javascript:void(0);"><SPAN>选择文件</SPAN>
+            <input id="file" class="filePrew" type="file" name="file" multiple="multiple"
+                onchange="javascript:onc();" />
+        </A>
+    </div>
+
+    <div name="dropbox" id="dropbox"
+        style="font-size:30px;color:#333333;background-color:#888888;min-width:300px;min-height:100px;border:3px dashed silver;">
+        <p style="line-height: 100px;">拖拽文件上传</p>
+    </div>
+
+    <div style="text-align: center; ">
+        <button class="button" type="submit" onclick="javascript:Upload();">上传</button>
+    </div>
+
+    <div id="fileliststring" style="background-color:#cccccc;  color:#333333; ">
+    </div>
+
+ 
+
+    <script>
+        var uploadFiles = new Array();
+
+        $(function () {
+            //阻止浏览器默认行为。 
+            $(document).on({
+                dragleave: function (e) {    //拖离 
+                    // e.preventDefault(); 
+                },
+                drop: function (e) {  //拖后放 
+                    // e.preventDefault(); 
+                },
+                dragenter: function (e) {    //拖进 
+                    // e.preventDefault(); 
+                },
+                dragover: function (e) {    //拖来拖去 
+                    e.preventDefault(); //主要】
+                }
+            });
+
+            var box = document.getElementById('dropbox'); //拖拽区域 
+
+            box.addEventListener("drop", function (e) {
+                e.preventDefault(); //取消默认浏览器拖拽效果 
+                var fileList = e.dataTransfer.files; //获取文件对象 
+                //检测是否是拖拽文件到页面的操作 
+                if (fileList.length == 0) {
+                    return false;
+                }
+                AddFiles(fileList);
+            }, false); //默认为false可不写，在冒泡阶段执行
+        });
+
+        function Refresh() {
+            location.reload();
+        }
+
+        function Upload() {
+
+            AddFiles(new Array());
+            if (uploadFiles.length <= 0) {
+                Refresh();
+                return;
+            }
+
+            uploadcount = uploadFiles.length;
+
+            var FileController = "SaveFile.php";                    // 接收上传文件的后台地址
+            // FormData 对象
+
+            var form = new FormData();
+            form.append("file", uploadFiles[0]);
+            // XMLHttpRequest 对象
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", FileController, true);
+            xhr.onload = function () {
+                Upload();
+            };
+            xhr.send(form);
+            uploadFiles.splice(0, 1);
+        }
+
+        function onc() {
+            var files = document.getElementById("file").files;//获取通过input传入的文件
+
+            if (files.length < 0) {
+                return;
+            }
+            AddFiles(files);
+        }
+
+        function AddFiles(files) {
+            var errstr = "";
+            for (var i = 0; i < files.length; i++) {
+                var filename = files[i].name;
+                var isfind = false;
+                for (var j = 0; j < uploadFiles.length; j++) {
+                    if (uploadFiles[j].name == filename) {//判断是否有重复文件，有则中断
+                        isfind = true;
+                        break;
+                    }
+                }
+
+                var index1 = filename.lastIndexOf(".");
+                var index2 = filename.length;//substring第二个参数默认为字符串尾
+                var postf = filename.substring(index1 + 1, index2);//后缀名  
+                var myarray = new Array('JPG', 'jpg', 'jpeg', 'JPEG', 'gif', 'GIF', 'png', 'PNG', 'txt');
+
+                if ($.inArray(postf, myarray) == -1) {//查找后缀是否符合数组标准
+                    errstr += filename + "/";//不符合就记下后缀名
+                    continue;
+                }
+                if (isfind == false) {
+                    uploadFiles.push(files[i]);//符合后缀且不重复的文件加入数组
+                }
+            }
+
+            if (errstr != "") {
+                alert("文件格式错误:" + errstr);
+            }
+
+            var fileliststring = "";//上传文件信息
+
+            for (var j = 0; j < uploadFiles.length; j++) {
+                fileliststring += uploadFiles[j].name + " 大小:" + (uploadFiles[j].size / 1000) + "k" + "</br>";
+            }
+
+            document.getElementById("fileliststring").innerHTML = fileliststring;
+        }
+
+    </script>
+    <script>
+
+
+
+        function RemorkData(id, type) {
+            if (type == 1) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    data: "taskid=" + id,
+                    url: "ajax.aspx?oper=ajaxOSSDel",
+                    error: function (XmlHttpRequest, textStatus, errorThrown) { },
+                    success: function (d) { }
+                });
+            }
+            $("#" + id).remove();
+            $("#BatchFile1").attr("disabled", false);
+            if ($("#a_BatchUpload")) {
+                $("#a_BatchUpload").removeClass("disabled-2");
+            }
+            var count = 0
+            $("#uplaodlist li").each(function () {
+                count++;
+            });
+            // $(window.parent.document).contents().find("#frm_upload2")[0].contentWindow.setuploadcount(count);
+            if (count > 0) {
+                $("#uplaodFormer").hide();
+                $("#uplaodAfter").show();
+            } else {
+                $("#uplaodFormer").show();
+                $("#uplaodAfter").hide();
+                $("#frm_upload2").attr("src", "/member_new/thesis/PostUpload.aspx?multiple=true&t=" + new Date().getTime());
+            }
+            $("#upload_count").val(count);
+            $("#sp_num").text(count + "/10");
+        }
+
+        function limitChars() {
+            var obj = $("#txtContent");
+            var _wordcount = $.trim(obj.val()).noSpace().length;
+            var _lastwordcount = _wordcount;
+            $("#txtWordCount").val(_wordcount);
+            $("#lastChars").text(_wordcount);
+        }
+
+        var btnVal = "";
+
+        function ajaxPostThesis(n) {
+            /*if(freeTimes === 0 && !checkFree) {
+                PaperYYFunShow.Alert('您今日的免费查重次数已用完，<a href="/member_new/recharge/membership.aspx" target="_blank" style="color:#2489f2;">开通会员不限免费查重次数</a>');
+                return;
+            }*/
+
+            $('#txtContent').val($.trim($('#txtContent').val()).reSpace());
+
+            var _data = {
+                title: $.trim($(window.frames["frm_upload"].document).find("#txtTitle1").val()).reSpace() != '' ? $.trim($(window.frames["frm_upload"].document).find("#txtTitle1").val()).reSpace() : $.trim($(window.parent.document).contents().find("#frm_upload1")[0].contentWindow.document.getElementById("txtTitle1").value).reSpace(),
+                author: $.trim($(window.frames["frm_upload"].document).find("#txtAuthor1").val()).reSpace(),
+                wordcount: parseInt($('#txtWordCount').val(), 10),
+                content: $.trim($('#txtContent').val()).reSpace(),
+                edition: edition,
+                taskid: $("#hidOssID").val(),
+                exttype: $("#hidExtType").val(),
+                subType: $("#hidSubType").val(),
+                useZjk: $("#hidUseZjk").val()
+            };
+        }
+    </script>
+    <script>
+        function ajaxFileUpload(obj) {
+            var title = $(obj).val();
+            var txtfile = $(obj).val();
+            if(!txtfile){
+                return false;
+            }
+            txtfile = txtfile.substring(txtfile.lastIndexOf('.') + 1).toLowerCase();
+            if (txtfile != "doc" && txtfile != "docx" && txtfile != "txt" && txtfile != "pdf") {
+                parent.PaperYYFunShow.Alert("请上传word或txt文件或pdf!");
+                return false;
+            }
+            try{
+                var fileSize = 0;
+                if (obj.files && obj.files[0]) {
+                    fileSize = obj.files[0].size;
+                } else {
+                    obj.select();
+                    var url = document.selection.createRange().text;
+                    var fso = new ActiveXObject("Scripting.FileSystemObject");
+                    fileSize = fso.GetFile(url).size;
+                }
+                if(fileSize>15728640){
+                    alert("上传失败！文件不能大于15m！");
+                    return false;
+                }
+            }catch(e){
+            }
+            parent.PaperYYFunShow.LodingOpen();
+            var extType = "word";
+            if (txtfile == "txt") {
+                extType = "txt";
+            } else if (txtfile == "pdf") {
+                extType = "pdf";
+            }
+            $("#ossid").val(ossid);
+            $('#txt_url').val($(obj).val());
+            var form = $("form[name=newupload]");
+            var data = {};
+            $("#newupload:input").each(function () {
+                data[this.name] = this.value
+            });
+            var options = {
+                url: 'https://similar-dispatch-center.ixueshu.com', //上传文件的路径
+                type: 'post',
+                data: data,
+                cache: false,
+                async: true,
+                dataType: 'xml',
+                //xhrFields: {withCredentials: true},
+                crossDomain: true,
+                success: function (xml, textStatus, jqXHR) {
+                    var _response = $(xml).find("PostResponse");
+                    var _re_txt = _response.text();
+                    if(_re_txt.length == 0){
+                        try {
+                            title = getFileName(title);
+                            if (txtfile == "doc" || txtfile == "docx") {
+                                $('.upload-his-box-l img').attr('src','/static/images/chachong/cc_icon_upload_doc.png');
+                            }else if(txtfile == "pdf"){
+                                $('.upload-his-box-l img').attr('src','/static/images/chachong/cc_icon_upload_pdf.png');
+                            }else{
+                                $('.upload-his-box-l img').attr('src','/static/images/chachong/cc_icon_upload_txt.png');
+                            }
+                            $('.upload-his-box-xbt').text(title);
+                            title = title.substring(0, title.lastIndexOf("."));
+                            $('#txtTitle', window.parent.document).val(title);
+                            $('#txtTitle1').val(title);
+                            $('.drop-upload').css({
+                                border:'none',
+                                height:'250px',
+                            });
+                            $('body').css('background','#fff');
+                            $('.filePrew').hide();
+                        } catch (e) {}
+                        $('#txtWordCount', window.parent.document).val(0);
+                        $('#hidOssID', window.parent.document).val(ossid);
+                        $('#hidExtType').val(txtfile);
+                        $('.first-upload').hide();
+                        $('.upload-his').show();
+                        parent.PaperYYFunShow.ShowMsg('恭喜您文件上传成功!');
+                    } else {
+                        var yzdata = $(xml).find("PostResponse").children("Key").text();
+                        parent.PaperYYFunShow.LodingClose();
+                        if (yzdata == "upload/" + ossid) {
+                            try {
+                                title = getFileName(title);
+                                if (txtfile == "doc" || txtfile == "docx") {
+                                    $('.upload-his-box-l img').attr('src','/static/images/chachong/cc_icon_upload_doc.png');
+                                }else if(txtfile == "pdf"){
+                                    $('.upload-his-box-l img').attr('src','/static/images/chachong/cc_icon_upload_pdf.png');
+                                }else{
+                                    $('.upload-his-box-l img').attr('src','/static/images/chachong/cc_icon_upload_txt.png');
+                                }
+                                $('.upload-his-box-xbt').text(title);
+                                title = title.substring(0, title.lastIndexOf("."));
+                                $('#txtTitle', window.parent.document).val(title);
+                                $('#txtTitle1').val(title);
+                                $('.drop-upload').css({
+                                    border:'none',
+                                    height:'250px',
+                                });
+                                $('body').css('background','#fff');
+                                $('.filePrew').hide();
+                            } catch (e) {
+                            }
+
+                            $('#txtWordCount', window.parent.document).val(0);
+                            $('#hidOssID', window.parent.document).val(ossid);
+                            $('#hidExtType', window.parent.document).val(txtfile);
+                            $('.first-upload').hide();
+                            $('.upload-his').show();
+                            parent.PaperYYFunShow.ShowMsg('恭喜您文件上传成功!');
+                        }
+                        else {
+                            parent.PaperYYFunShow.Alert("文件上传时效性过期,请刷新页面重试!");
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    parent.PaperYYFunShow.LodingClose();
+                    alert("服务器会话超时,请重试!");
+                    window.location.reload();
+
+                }
+            };
+            form.ajaxSubmit(options);
+        }
+    </script>
+
+</body>
+
+</html>

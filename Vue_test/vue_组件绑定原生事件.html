@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue-2.6.12/dist/vue.js"></script>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: bisque;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <my-comp @click='say' ></my-comp>
+    </div>
+    <script>
+        Vue.component('my-comp',{
+            props: [],
+            template: `
+                <div class='box'>
+                    <button @='btnListeners'>click</button>
+                </div>
+            `,
+            methods: {
+                click: function(){
+                    console.log(this.$listeners)
+                },
+                say:function(){
+                    alert("子组件")
+                }
+            },
+            computed: {
+                btnListeners: function(){
+                    var vm = this;
+                    return Object.assign({},vm.$listeners)
+                }
+            },
+
+        });
+        new Vue({
+            el: '#app',
+            data: {
+
+            },
+            methods: {
+                input: function(){alert()},
+                say: function(){
+                    alert("父组件")
+                }
+            },
+        });
+    </script>
+</body>
+</html>

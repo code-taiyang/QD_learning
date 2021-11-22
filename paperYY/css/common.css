@@ -1,0 +1,159 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #ebedf3;
+}
+input,button {
+    outline: none;
+}
+li{
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+em.input-error {
+    font-size: 14px;
+    color: red;
+}
+
+
+
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+    font-size: 0;
+}
+.w {
+    min-width: 1200px;
+    width: 1200px;
+}
+.centerY {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.centerX {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.nav-active {
+    color: white;
+    border-bottom: 2px white solid;
+}
+.slide12{
+    background-image: url(../imgs/banner12_bg.png);
+}
+.slide11{
+    background-image: url(../imgs/banner11_bg.png);
+}
+.slide7{
+    background-image: url(../imgs/banner7_bg.png);
+}
+.slide8{
+    background-image: url(../imgs/banner8_bg.png);
+}
+.slide9{
+    background-image: url(../imgs/banner9_bg.png);
+}
+.slide10{
+    background-image: url(../imgs/banner10_bg.png);
+}
+.next {
+    right: 5%;
+    opacity: .4;
+    background-image: url(../icons/next.png);
+}
+.prev {
+    left: 5%;
+    opacity: 0.2;
+    background-image: url(../icons/prev.png);
+}
+.next:hover {
+    opacity: 1;
+}
+.prev:hover {
+    opacity: .6;
+}
+@media screen and (max-width:1000px){
+    .header .nav li:not(:nth-of-type(1)) {
+        display: none;
+    }
+    .header .nav .menu span {
+        display: block;
+    }
+}
+
+.in-icon1 {
+    background-position: 0 -420px;
+}
+.in-icon2 {
+    background-position: 0 -360px;
+}
+.in-icon3 {
+    background-position: 0 -480px;
+}
+.info4-icon1 {
+    background-image: url(../icons/ind-icons1.png);
+}
+.info4-icon2 {
+    background-image: url(../icons/ind-icons2.png);
+}
+.info4-icon3 {
+    background-image: url(../icons/ind-icons3.png);
+}
+.info4-icon4 {
+    background-image: url(../icons/ind-icons4.png);
+}
+.info4-icon5 {
+    background-image: url(../icons/ind-icons5.png);
+}
+.info4-icon6 {
+    background-image: url(../icons/ind-icons6.png);
+}
+.info5-icon {
+    display: block;
+    width: 36px;
+    height: 28px;
+    margin: 0 auto;
+    background-image: url(../icons/icon-fighting.png);
+}
+.recommend-icon {
+    display: inline-block;
+    width: 18px;
+    height: 50px;
+    padding-left: 120px;
+    background: url(../icons/arr.png) no-repeat;
+    background-position: center right;
+}
+.icon-qq {
+    width: 15px;
+    background-position: 0 0;
+}
+.icon-wx {
+    width: 21px;
+    background-position: 21px 0;
+}
+.icon-wb {
+    width: 22px;
+    background-position: -28px 0;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue-2.6.12/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <my-comp>
+            <template v-slot:default = 'user'>
+                {{name.fname}}
+            </template>
+        </my-comp>
+    </div>
+    <script>
+        Vue.component('my-comp',{
+            data: function(){
+                return {
+                    name: {
+                        fname: 's',
+                        lname: 'y',
+                    } ,
+                }
+            },
+            template: `
+                <div>
+                    <slot :user='name.fname'>{{name.fname}}</slot>
+                   <p>一段文本</p>
+                
+                </div>
+            `,
+        });
+
+        new Vue({
+            el: '#app',
+            data: {
+                name: 'sy',
+            },
+        });
+    </script>
+</body>
+</html>

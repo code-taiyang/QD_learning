@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <!-- router-link默认渲染成<a>标签 -->
+      <!-- to填入路由地址path -->
+      <router-link to='/foo'>to foo</router-link>
+      <router-link to='/bar'>to bar</router-link>
+    </div>
+    <!-- 点击link后，路由对应的组件会被渲染到这里 -->
+    <router-view></router-view>
+  </div>
+  <script>
+    const foo = {
+      template: `
+        <div>foo</div>
+      `
+    }
+    const bar = {
+      template: `
+        <div>bar</div>
+      `
+    }
+    const routes = [//创建路由关系映射表
+      {
+        path: '/foo',
+        name: 'foo',
+        component: foo//此处传组件的配置对象，用法和功能与在vue的components选项中注册组件一样
+      },
+      {
+        path: '/bar',
+        name: 'bar',
+        component: bar
+      },
+    ]
+    const router = new VueRouter({//将路由表实例化为路由对象
+      routes,
+    });
+    const app = new Vue({
+      router//根实例中注入路由对象，使其整个实例内部可用（this.$router）
+    }).$mount('#app')//手动挂载根实例
+    // const app = new Vue({
+    //   el: '#app',
+    //   router,
+    //   // data: {},
+    //   components: {
+    //     foo,
+    //     bar//已经在VueRouter中做成组件了，这里不需要再注册
+    //   }
+    // });
+  </script>
+</body>
+
+</html>

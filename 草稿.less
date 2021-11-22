@@ -1,0 +1,177 @@
+@bg-color: color;//变量为属性名
+@color-val: #666;//变量为属性值
+// @my-div:#div;//变量为选择器
+@my-div:div;//变量为选择器
+@txtval:"txt";//变量为变量名
+@min-h:100px;
+@h:@min-h+100px;
+
+@txt:"hello div";//
+@img-url:"./lunbotu/img";//变量为url
+@imp:"./导入.less";
+@import "@{imp}";//导入文件
+//除了属性值以外的用法需要给name加上大括号
+body {
+    content: @@txtval;
+}
+div#@{my-div} {
+    width: 200px;
+    height: @h;
+    background-@{bg-color}: @color-val;
+    background-image: url("@{img-url}/disabled-prev.png");
+    .font(#999);
+    .border(50% 50%);
+    .Hover();
+}
+
+//属性集（Mixin）：类似函数，名字为选择器(){}，即结构类似css的样式声明，但可以加入变量（调用时也要写完整：选择器();）
+//该集合可以多次调用，调用后相当于将其中的属性加入到对应的声明中。
+//另外：不加括号时（即原css声明）也能被默认为未加参数的Mixin调用，即selector()
+//但是，加上括号的Mixin不会被作为声明编译到css文件中，而是变成属性直接加入到了目标声明中
+.font(@color:red){//属性值可选，写了就作为默认值（不输入参数时），输入参数仍为参数的属性值
+    color: @color;
+}
+.border(@radius){//调用时属性值必写
+    border-radius: @radius;
+}
+.red,#red{
+    color: #111;
+}
+//补充：Mixin还能向声明中加入选择器、伪类等
+.Hover() {
+    &:hover{
+        background-color: darkorange;
+    }
+}
+//声明嵌套（Nesting），一般的css写子元素的样式时需要加空格，如：.class .son{}，Less支持嵌套来写
+//写法如下：
+/*
+    父选择器{
+        属性：值
+        ...
+        子选择器1 {
+            属性：值
+            ..
+        }
+        子选择器2 {
+            属性：值
+            ..
+        }
+        ...
+        &:hover{..}
+        &+选择器{..}
+        ....
+        //注意：当嵌套选择器前加&时，该样式是加到父选择器上的
+        //&的含义相当于是祖先选择器，即重复一次祖先选择器名
+        //如：.class{ 属性1;&-A{属性2};&-B{属性3} }--->.class{属性1}   .class-A{属性2}  .class-B{属性3}
+        更多用法（仍以父选择器class为例）：
+        1. & + &-->.class + .class {..};
+        2. & &---->.class .class {..};
+        3. &&----->.class.class{..};//以上样式选择器很少这么用
+        4. &, &A-->.class,.classA{..}
+        //注意：&会重复所有的祖先选择器，即A{B{&,&-C{}}}x相当于A B,A B-C{..}
+        //注意：若有多个同一级祖先选择器（用逗号分隔），使用以上方法则会产生所有的两两匹配的选择器
+        //如：A,B的& + &--->A+B，A+A，B+A，B+B
+    }
+*/
+//@规则嵌套见链接
+.button {
+    clear: both;
+    &-ok {
+      background-image: url("ok.png");
+    }
+    &-cancel {
+      background-image: url("cancel.png");
+    }
+  
+    &-custom {
+      background-image: url("custom.png");
+    }
+  }
+
+  //运算符：Less也可以对数字和颜色值做运算。计算结果单位以左侧单位为准。此外乘除不需要计算单位（因为乘就变成了平方单位，故以左侧为准，如3cm*6mm=18cm  ）
+  @conversion-1: 5cm + 10mm; // 结果是 6cm
+  @conversion-2: 2 - 3cm - 5mm; // 结果是 -1.5cm
+  @color: #224488 / 2; //结果是 #112244
+  @background-color: #112244 + #111; // 结果是 #223355
+  //不建议不同单位运算和颜色运算，此外，Less也有自己定义的颜色定义函数（见Less函数手册）
+  
+
+  //转义：对不便于编译的字符串或Less不能识别的字符进行加工，使之能原样输出
+  //用法：~"内容"或~'内容'（用的较少）
+  //例子：https://blog.csdn.net/ivenqin/article/details/107605356
+  
+
+
+  //对于Mixin，可以将其看作js中的名字和属性比较特别的对象，故在定义时，其中可以带有CSS属性、变量以及方法（即其它类或Mixin）
+  //封装格式一般用ID选择器(){}作为大对象【记得要写括号】，class选择器作为方法
+  //见下面例子：
+  #bundle() {
+    .button {
+      display: block;
+      border: 1px solid black;
+      background-color: grey;
+      &:hover {
+        background-color: white;
+      }
+    }
+    .tab {  }
+    .citation {  }
+  }
+  #header a {
+    color: orange;
+    #bundle.button();  // 还可以书写为 #bundle > .button 形式
+  }
+  /*编译后即
+    #header a {
+      color: orange;
+      display: block;
+      border: 1px solid black;
+      background-color: grey;
+    }
+    #header a:hover {
+      background-color: white;
+    }
+  */
+
+  /*
+    以上的封装好处在于能够像js对象那样引用其中的“方法”放入特定的css样式中
+    如：
+    #header a {
+      color: orange;
+      #bundle.button();  // 【还可以书写为 #bundle > .button 形式】
+    }
+  */
+
+
+  /*
+    Less映射：同样类似于对象通过关联数组表达的方式
+    即通过上面的封装方法设计一个对象，其中包含定义好的变量（作为对象的键值对属性），以及Mixin（作为方法）
+    上面讲过对方法的引用，而映射即是对变量的引用
+    如下：
+    #colors() {
+      primary: blue;
+      secondary: green;
+    }
+
+    .button {
+      color: #colors[primary];//关联数组引用法
+      border: 1px solid #colors[secondary];
+    }
+  */
+  //综上，通过类似于定义对象来写css样式，就能单独定义出一个Less对象样式表，css需要的样式直接调用即可，维护起来也方便
+  /*
+    定义：
+    #selector(){
+      var1 : val1;
+      var2 : val2;
+      ...
+      .Mixin1{}
+      .Mixin2{}
+    }
+    调用：
+    #selector[var1]
+    #selector.Mixin1()
+  */
+
+    //关于作用域：优先在调用者局部找变量，找不到就向上一级继承

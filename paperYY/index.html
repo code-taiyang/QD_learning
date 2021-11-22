@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>paperYY</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/idnex.css">
+    <link rel="stylesheet" href="./css/login.css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../jQuery/jquery.min.js"></script>
+    <script src="./js/swiper.js"></script>
+    <script src="./js/login.js"></script>
+    <style>
+        .popup-wrapper {
+            display: none;
+        }
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .3);
+            z-index: 9999;
+        }
+        .popup {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            min-height: 200px;
+            width: 440px;
+            padding: 0 50px;
+            border-radius: 5px;
+            background-color: #fff;
+            color: rgb(102, 102, 102);
+            z-index: 10000;
+        }
+        .popup .close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 30px;
+            height: 30px;
+            background: url(./icons/close_gray.png) no-repeat center;
+            cursor: pointer;
+
+        }
+        .popup .title {
+            margin: 15px 0 30px;
+            font-weight: normal;
+        }
+        .popup .hint {
+            display: inline-block;
+            font-size: 15px;
+            font-weight: bold;
+            line-height: 40px;
+        }
+        .popup .verify-img-wrapper #imgCodeValue {
+            margin-right: 15px;
+            padding-left: 20px;
+            height: 38px;
+            width: 295px;
+            line-height: 38px;
+            font-size: 16px;
+            color: #666;
+            border: 1px solid #e3e3e3;
+            border-radius: 4px;
+        }
+        .popup .verify-img-wrapper .imgCode {
+            width: 102px;
+            height: 38px;
+            border: 1px solid #d1d1d1;
+            cursor: pointer;
+        }
+        .popup .submit-imgCode {
+            margin: 40px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="container clearfix">
+            <div class="logo fl">
+                <a href="./index.html"><img class="centerY" src="./imgs/logo.png" alt=""></a>
+            </div>
+            <ul class="nav fr">
+                <li><a class="nav-active" href="./index.html">首页</a></li>
+                <li><a href="#">论文查重</a></li>
+                <li><a href="#">自动降重</a></li>
+                <li><a href="#">真伪查询</a></li>
+                <li><a href="#">免费使用</a></li>
+                <li><a href="#">人工降重</a></li>
+                <div class="menu fl">
+                    <span>菜单</span>
+                    <div class="options clearfix">
+                        <div><a href="#">论文查重</a></div>
+                        <div><a href="#">自动降重</a></div>
+                        <div><a href="#">真伪查询</a></div>
+                        <div><a href="#">免费使用</a></div>
+                        <div><a href="#">人工降重</a></div>
+                    </div>
+                </div>
+                <span class="split fl"></span>
+                <div class="register fl"><a href="#">注册</a></div>
+            </ul>
+        </div>
+    </div>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="swiper-img slide12"></div>
+                <div class="swiper-img slide11">
+                    
+                </div>
+                <div class="swiper-img slide7">
+
+                </div>
+                <div class="swiper-img slide8">
+
+                </div>
+                <div class="swiper-img slide9">
+
+                </div>
+                <div class="swiper-img slide10">
+
+                </div>
+            </div>
+            <i class="arrow next centerY"></i>
+            <i class="arrow prev centerY"></i>
+        </div>
+    </div>
+    <!-- 登录模块大致分3部分：
+    1. 顶部选择登录方式（公共）
+    2. 对应登录栏（即微信扫码登录，账号密码登录/验证码登录）
+    3. 其他：注册、其他账号登录（公共）
+    对于账号密码和验证码登录，需要设置各自的登录提交按钮（因为发出的ajax请求不同）
+-->
+    <div class="login-wrapper">
+        <div class="login-option clearfix">
+            <span class="option wx-login option-active">微信登录</span>
+            <span class="option user-login">账号登录</span>
+        </div>
+        <div>
+            <div class="wx-wrapper">
+                <p class="text">用微信扫码 免费检测</p>
+                <img id="login-qr-img" class="login-qrcode" src="./imgs/lose.png" alt="扫码登录">
+            </div>
+
+            <div class="user-wrapper">
+                <!-- 表单要用form包含 -->
+                <form action>
+                    <div class="login1">
+                        <div class="hint-wrapper">
+                            <p class="hint">手机号/邮箱/用户名：</p><em class="input-error"></em>
+                        </div>
+                        <input class="input input-name" placeholder="请输入手机号/邮箱/用户名" type="text" name="username">
+                        <div class="hint-wrapper">
+                            <p class="hint">密 码：</p><em class="input-error"></em><a class="forget fr">忘记密码？</a>
+                        </div>
+                        <input class="input input-pass" placeholder="密码" type="password" name="password" autocomplete="off">
+                    </div>
+
+                    <div class="login2">
+                        <div class="hint-wrapper">
+                            <p class="hint">手机号：</p><em class="input-error"></em>
+                        </div>
+                        <input class="input input-tele" placeholder="请输入手机号" type="text" name="telephone">
+                        <div class="hint-wrapper">
+                            <p class="hint">验证码：</p><em class="input-error"></em>
+                        </div>
+                        <div class="v-code-wrapper">
+                            <input class="input input-v-code" placeholder="请输入验证码" type="text" name="v-code" autocomplete="off">
+                            <div class="get-v-code">获取验证码</div>
+                        </div>
+                    </div>
+
+                    <div class="cookie">
+                        <!-- 用icon改变代替选中样式 -->
+                        <i class="checkbox"><input type="checkbox" id="auto-login" checked></i>
+                        <span class="auto-login">下次自动登录</span>
+                        <div class="login-change fr">
+                            <a class="login v-code-login">验证码登录</a>
+                            <a class="login pass-login">密码登录</a>
+                        </div>
+                       
+                    </div>
+    
+                    <div class="login1">
+                        <input class="submit-btn" type="button" value="登  录1" id="pass-submit">
+                    </div>
+                    <div class="login2">
+                        <input class="submit-btn" type="button" value="登  录2" id="v-code-submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="other">
+            <p class="register-now">还没有PaperYY账号？<a href="#">立即注册</a></p>
+            <p class="other-text">其他账号登录： </p>
+            <a class="qq-login" title="qq登录" href="#"><i class="login-icon qqicon"></i></a>
+            <a class="wb-login" title="微博登录" href="#"><i class="login-icon wbicon"></i></a>
+        </div>
+    </div>
+    <div class="popup-wrapper popup-login2">
+        <div class="bg"></div>
+        <div class="popup popup2">
+            <i class="close"></i>
+            <h4 class="title">请输入下方图片验证码</h4>
+            <div class="verify-img-wrapper">
+                <div>
+                    <p class="hint">图片验证码：</p>
+                    <em class="input-error"></em>
+                </div>
+                <input class="fl" type="text" name="imgCodeValue" id="imgCodeValue" placeholder="请输入右侧图片内容" autocomplete="off" >
+                <img class="imgCode fl" src="" alt="图片验证码" data-clientId="" >
+                <button class="submit-btn submit-imgCode">提交</button>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="info1">
+            <ul class="wrapper clearfix">
+                <li>
+                    <i class="in-icon in-icon1"></i>
+                    <h3>快速</h3>
+                    <i class="line"></i>
+                    <p>动态指纹对比检测技术，在保证查重质量的情况下，最快1分钟出结果</p>
+                </li>
+                <li>
+                    <i class="in-icon in-icon2"></i>
+                    <h3>准确</h3>
+                    <i class="line"></i>
+                    <p>1亿期刊论文，20亿互联网网页，500本图书对比库，覆盖中外文海量文献</p>
+                </li>
+                <li>
+                    <i class="in-icon in-icon3"></i>
+                    <h3>安全</h3>
+                    <i class="line"></i>
+                    <p>指纹对比，自主检测，查重报告仅保留7天则清空，安全无痕迹</p>
+                </li>
+            </ul>
+        </div>
+        <div class="info2">
+            <div class="wrapper">
+                <div class="icon-tips"></div>
+                <ul class="inner">
+                    <img src="./imgs/con-8-header.png" alt="paperYY 查重">
+                    <i class="line"></i>
+                    <li><span>paperyy查重系统以细粒度数据库分离查询；</span></li>
+                    <li><span>根据品牌特点，能够准确预测其他系统结果；</span></li>
+                    <li><span>基于AI的智能特征比对算法，查重效率最快只需1秒；</span></li>
+                    <li><span>智能算法预处理学科分类，准确度较上一代提高60%。</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="info3">
+            <div class="wrapper">
+                <div class="qr-wrapper">
+                    <i class="head"></i>
+                    <p>查重结果微信实时通知，通过小程序可以随时修改论文，一键降低重复率，简单方便</p>
+                    <div class="qr-code">
+                        <img src="./imgs/1540349447.png" alt="微信二维码">
+                    </div>
+                </div>
+                <i class="phone"></i>
+            </div>
+        </div>
+        <div class="info4">
+            <div class="wrapper">
+                <div class="head">
+                    <h4></h4>
+                    <i class="line"></i>
+                </div>
+                <ul class="clearfix">
+                    <li>
+                        <i class="info4-icon info4-icon1"></i>
+                        <h5>论文降重</h5>
+                        <i class="line"></i>
+                        <p>第3代智能语义纠错模型智能降重引擎，进一步优化修改后的语句通顺度、连贯性、上下文结构，较上一代提升30%</p>
+                    </li>
+                    <li>
+                        <i class="info4-icon info4-icon2"></i>
+                        <h5>系统预测</h5>
+                        <i class="line"></i>
+                        <p>通过海量查重结果的对比与统计，能够根据文章类别、写作方向准确预测其他系统的查重结果近似数据。</p>
+                    </li>
+                    <li>
+                        <i class="info4-icon info4-icon3"></i>
+                        <h5>论文纠错</h5>
+                        <i class="line"></i>
+                        <p>机器学习错字识别系统，快速代替人工找出论文中错别字，杜绝论文因错字返稿</p>
+                    </li>
+                    <li>
+                        <i class="info4-icon info4-icon4"></i>
+                        <h5>论文资料</h5>
+                        <i class="line"></i>
+                        <p>3亿专业学术论文文档免费下载，找论文不求人</p>
+                    </li>
+                    <li>
+                        <i class="info4-icon info4-icon5"></i>
+                        <h5>格式排版</h5>
+                        <i class="line"></i>
+                        <p>自动化、智能化解决格式排版问题，完全解放双手，告别繁琐的格式调整。</p>
+                    </li>
+                    <li>
+                        <i class="info4-icon info4-icon6"></i>
+                        <h5>参考文献规范</h5>
+                        <i class="line"></i>
+                        <p>论文写完了，参考文献格式不会弄，paperyy帮你一键规范。</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="info5">
+            <div class="wrapper">
+                <div>
+                    <i class="info5-icon"></i>
+                    <p class="title">每年800万毕业生有500万使用PaperYY系统解决论文问题</p>
+                </div>
+                <div class="comment-container">
+                    <div>
+                        <div class="hd">
+                            <img src="./imgs/ind-avatar1.png" alt="学姐">
+                            <div>
+                                <p class="person">学姐</p>
+                                <p class="date">2019.8.23</p>
+                            </div>
+                        </div>
+                        <div class="bd">
+                            <i class="triangle"></i>
+                            <p class="comment">我的论文初稿用的是PaperYY的免费版，出报告的速度很快，而且查重报告还比较详细，按照这个报告又对论文进行了修改，顺利通过了学校的查重。</p>
+                        </div>
+                    </div>
+                    <div class="mh-70">
+                        <div class="hd">
+                            <img src="./imgs/ind-avatar2.png" alt="导师">
+                            <div>
+                                <p class="person">导师</p>
+                                <p class="date">2019.8.23</p>
+                            </div>
+                        </div>
+                        <div class="bd">
+                            <i class="triangle"></i>
+                            <p class="comment">
+                                用它给学生进行的查重，可以批量上传，检测速度挺快，结果一目了然，价格也比较实惠，如果检测完可以批量下载或者是批量生成结果电子表就比较完美了，相对比之前使用过的，这个查重还是不错的
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="hd">
+                            <img src="./imgs/ind-avatar3.png" alt="学妹">
+                            <div>
+                                <p class="person">学妹</p>
+                                <p class="date">2019.8.23</p>
+                            </div>
+                        </div>
+                        <div class="bd">
+                            <i class="triangle"></i>
+                            <p class="comment">
+                                PaperYY小程序查重很方便，结果会发到微信中，。论文已经通过了，用了至尊版，定稿使用知网进行的查重，建议初稿用免费版的查重，中稿用至尊版，定稿的话使用知网，省钱~</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="recommend-reading">
+            <div class="wrapper">
+                <div class="recommend-hd">
+                    <a href="#"><i class="recommend-icon"></i></a>
+                </div>
+                <i class="line"></i>
+                <div class="list-wrapper">
+                    <!-- 这里的链接地址和时间应该用模板（jtemplate）或框架请求数据生成 -->
+                    <ul class="list">
+                        <li>
+                            <a class="title" href="#">严禁以PaperYY查重结果数据假冒知网</a>
+                            <p class="date">2020-10-13</p>
+                        </li>
+                        <li>
+                            <a class="title" href="#">关于PaperYY论文查重的相关问题</a>
+                            <p class="date">2019-11-08</p>
+                        </li>
+                        <li>
+                            <a class="title" href="#">毕业设计的一些降重技巧</a>
+                            <p class="date">2019-12-27</p>
+                        </li>
+                        <li>
+                            <a class="title" href="#">超好用的查重、降重攻略。</a>
+                            <p class="date">2019-12-21</p>
+                        </li>
+                        <li>
+                            <a class="title" href="#">开题报告与文献综述写作攻略,助你毕业无忧</a>
+                            <p class="date">2019-12-17</p>
+                        </li>
+                    </ul>
+                    <ul class="list">
+                        <li>
+                            <a class="title" href="#">论文参考文献快速搞定</a>
+                            <p class="date">2019-09-26</p>
+                        </li>
+                        <li>
+                            <a class="title" href="#">毕业论文答辩流程，及技巧全攻略</a>
+                            <p class="date">2019-06-12</p>
+                        </li>
+                        <li>
+                            <a class="title" href="#">文献综述怎么写</a>
+                            <p class="date">2019-09-20</p>
+                        </li>
+                        <li>
+                            <a class="title" href="#">2020年考研优秀写作必备因素</a>
+                            <p class="date">2019-08-08</p>
+                        </li>
+                    </ul>
+                    <i class="icon-tel"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="wrapper">
+            <div class="about">
+                <div class="enter-wrapper">
+                    <h4 class="foot-hd">快捷入口</h4>
+                    <div class="enter clearfix">
+                        <a href="#">关于我们</a>
+                        <a href="#">免责声明</a>
+                        <a href="#">隐私声明</a>
+                        <a href="#">侵权处理</a>
+                        <a href="#">代理开通流程</a>
+                    </div>
+                </div>
+                <div class="connect-us">
+                    <h4 class="foot-hd">联系我们</h4>
+                    <div class="wx">
+                        <a>客服微信号&nbsp;<img src="./icons/icon_code_foot.png"></a>
+                        <div class="wx-qrcode">
+                            <img src="./imgs/customer_wx_20200902.jpg" alt="微信小程序二维码">
+                        </div>
+                    </div>
+                    <div>商务合作（QQ）：1350119181</div>
+                    <div>邮箱（建议）：service@paperyy.com</div>
+                    <div>公司地址：武汉市东湖开发区东信路SBI创业街6栋1201号</div>
+                </div>
+                <div class="about-us">
+                    <h4 class="foot-hd">关于我们：</h4>
+                    <div class="description" title="武汉亿次源信息技术有限公司旗下的PaperYY论文查重是目前市面为数不多以互联网思维运营的查重平台，一直坚持以用户为中心，提供优质的查重服务。同时效率、安全、质量、体验是我们一直追求并遵循的核心标准。PaperYY也是全网唯一拥有三端（电脑端，移动端，微信小程序端）的查重平台，每年服务用户数遥遥领先同行，以口碑著称。">
+                        武汉亿次源信息技术有限公司旗下的PaperYY论文查重是目前市面为数不多以互联网思维运营的查重平台，一直坚持以用户为中心，提供优质的查重服务。同时效率、安全、质量、体验是我们一直追求并遵循的核心标准。PaperYY也是全网唯一拥有三端（电脑端，移动端，微信小程序端）的查重平台，每年服务用户数遥遥领先同行，以口碑著称。
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="wrapper clearfix">
+                <div class="copyright">
+                    <a href="#">鄂ICP备15001571号-1 PaperYY论文查重</a>
+                    <a href="#"><img class="fl" src="./icons/ban.png"></img>&nbsp;鄂公网安备 42011102002846号</a>
+                </div>
+                <div class="fr share">
+                    <span>分享到：</span>
+                    <a class="share-qq" href="#" title="qq空间">
+                        <i class="icon icon-qq"></i>
+                    </a>
+                    <a class="share-wb" href="#" title="新浪微博">
+                        <i class="icon icon-wb"></i>
+                    </a>
+                    <a class="share-wx">
+                        <i class="icon icon-wx"></i>
+                        <div class="share-qrcode">
+                            <img class="qrcode" src="./imgs/paperyy_wx.jpg">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <script>
+       
+    </script>
+</body>
+
+</html>

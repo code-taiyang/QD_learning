@@ -1,0 +1,46 @@
+.div {
+  height: 100px;
+  background-color: #666;
+}
+.consult-method {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 20px 27px ;
+}
+.consult-method .method {
+  margin-top: 20px;
+}
+.consult-method .method .icon {
+  width: 20px;
+  height: 21px;
+}
+.consult-method .method .icon-QQ {
+  background: url('@/static/images/QQ.png') no-repeat;
+}
+.consult-method .method .icon-wx {
+  background: url('@/static/images/wx.png') no-repeat;
+}
+.consult-method .method .icon-tele {
+  background: url('@/static/images/tele.png') no-repeat;
+}
+.consult-method .method .info {
+  margin-left: 15px;
+  font-size: 12px;
+  opacity: 0.65;
+}
+.consult-method .method .text {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.feature .feat-info .info {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 12px;
+  opacity: 0.45;
+}
+.feature .feat-info .text {
+  font-size: 15px;
+  margin-top: 10px;
+  opacity: 0.85;
+}

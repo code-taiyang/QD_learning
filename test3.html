@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="../../../QD/jQuery/jquery.min.js"></script> -->
+    <style>
+        .box {
+            display: flex;
+            place-items: center;
+        }
+        .target {
+            
+            width: 200px;
+            height: 200px;
+            border: brown 1px solid;
+            margin-left: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="target box1">
+            <p draggable="true" id="dragtarget">拖拽我</p>
+            <!-- 绑定事件记得先设置draggable属性 -->
+        </div>
+        <div class="target box2"></div>
+    </div>
+
+    <script>
+        /*
+            事件：
+                dragstart/drag/dragend---------->给需要拖拽的对象设置
+                dragenter/dragover/dragleave---->给拖拽过程中经过的对象设置
+                drop---------------------------->给拖拽的目的地对象设置
+
+            dataTransfer对象：
+                该对象是拖拽事件发生时产生的event对象的子对象，用于拖拽过程中拖拽元素和目标对象的数据传输
+
+                方法1：setData()
+        */
+        var dragtarget = document.querySelector("#dragtarget");
+        var box1 = document.querySelector(".box1");
+        var box2 = document.querySelector(".box2");
+
+        //绑定给需要拖拽的对象，即源对象
+        dragtarget.addEventListener("dragstart",function(e){
+            console.log("开始拖拽");
+            console.log(e);
+            e.dataTransfer.setData("t","hello");
+            e.dataTransfer.setData("s","world");
+            e.dataTransfer.setData("text/plain","shenyang");
+            //类似jQuery的data()方法，是给需要拖拽的对象设置数据，再通过目标的dataTransfer对象的getData("名")获取
+            //【注意】在文本框中想要将拖拽对象的文本数据传输进去，需要设置变量名为"text"或"text/plain"
+        });
+        dragtarget.addEventListener("drag",function(e){//所有拖拽事件都可直接绑定在document对象上
+            // console.log("正在拖拽");//只要发生拖拽偏移且鼠标不放开，就会一直触发
+        });
+        dragtarget.addEventListener("dragend",function(e){
+            console.log("结束拖拽");
+        });
+
+        //给过程对象绑定（也可给拖拽对象本身绑定，其作用域在拖拽开始的地方）
+        //【过程对象即拖拽元素时经过的对象】
+        box2.addEventListener("dragenter",function(e){
+            console.log("我进入了box2");
+        });
+        box2.addEventListener("dragover",function(e){
+            e.preventDefault();//注意：元素在目标中拖拽时，浏览器默认不会接收目标（鼠标箭头样式为'禁止'）
+            //故需要去掉浏览器默认行为
+            // console.log("我在box2中移动");//类似drag事件，但是事件绑定给目标对象，只有在目标对象内才会触发
+        });
+        box2.addEventListener("dragleave",function(e){
+            console.log("我离开了box2");
+        });
+
+        //给目标对象绑定
+        box2.addEventListener("drop",function(e){
+            // e.preventDefault();
+            console.log(e);
+            e.target.appendChild(dragtarget);//注意：浏览器不会接收元素，需要自己将其添加到目标中
+            console.log("我被box2接收了！！");//只有目标对象能接收拖拽元素时才会触发（见dragover）
+            var data1 = e.dataTransfer.getData("t");
+            var data2 = e.dataTransfer.getData("s");//获取拖拽对象的数据
+            var data = e.dataTransfer.getData("text");
+            console.log(data1+data2);
+            console.log(data)
+        });
+    </script>
+
+</body>
+</html>

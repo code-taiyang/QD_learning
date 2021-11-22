@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		.box {
+			margin-top: 20px;
+			padding: 10px;
+			width: 400px;
+			border: 1px solid #fff;
+			border-radius: 10px;
+			box-shadow: 0px 0px 12px 3px rgb(0 0 0 / 20%);
+		}
+		.index,.d-index {
+			width: 35px;
+		}
+	</style>
+</head>
+
+<body>
+	<div>
+		<input class="name" type="text" placeholder="name" value="">
+		<input class="age" type="text" placeholder="age" value="">
+		<button class="createBtn">创建节点</button>
+		在<input class="index" type="text" placeholder="index" value=''>后<button class="insertBtn">插入节点</button>
+		<br/>
+		<input class="d-index" type="text" placeholder="index" value=''><button class="deleteBtn">删除节点</button><button class="deleteAll">删除链表</button>
+	</div>
+	<div class="box"></div>
+
+	<script src="./list.js"></script>
+	<script>
+		const arr = [
+			{
+				name: '2',
+				age: 2
+			},
+			{
+				name: '3',
+				age: 3
+			},
+		];
+		const brr = [
+			{
+				name: '4',
+				age: 4
+			},
+			{
+				name: '5',
+				age: 5
+			},
+		];
+		const crr = [
+			{
+				name: '1',
+				age: 1
+			},
+			{
+				name: '0',
+				age: 0
+			},
+		];
+		const drr = [
+			{
+				name: '拼接1',
+				age: 1111
+			},
+			{
+				name: '拼接2',
+				age: 2222
+			},
+		];
+		let list = List.create(...arr);
+		console.log('list :>> ', list);
+		list.appendNode(...brr);
+		console.log('list :>> ', list);
+		list.prependNode(...crr);
+		list.insertNodeByIndex(5);
+		console.log('list :>> ', list);
+		// list.insertNodeByIndex(100,...drr);
+	</script>
+	
+	<script>
+		let nameInput = document.querySelector('.name');
+		let ageInput = document.querySelector('.age');
+		let indexInput = document.querySelector('.index');
+		let delIndex = document.querySelector('.d-index');
+		let createBtn = document.querySelector('.createBtn');
+		let insertBtn = document.querySelector('.insertBtn');
+		let deleteBtn = document.querySelector('.deleteBtn');
+		let deleteAll = document.querySelector('.deleteAll');
+		let box = document.querySelector('.box');
+		function renderTable(list){
+			let currentNode = list.head;
+			let listItem = '';
+			box.innerHTML = '';
+			while(currentNode){
+				listItem += `
+					<tr>
+						<td>${currentNode.prev?currentNode.prev.name:'null'}</td><td>${currentNode.name}</td><td>${currentNode.age}</td><td>${currentNode.next?currentNode.next.name:'null'}</td>
+					</tr>
+				`
+				currentNode = currentNode.next;
+			}
+			let table = `
+				<table>
+					<thead>
+						<tr>
+							<td>prev</td><td>name</td><td>age</td><td>next</td>
+						</tr>
+					</thead>
+					<tbody>
+						${listItem}
+					</tbody>
+				</table>
+			`;
+			box.innerHTML = table;
+		}
+		createBtn.addEventListener('click', function () {
+			if(!validator()){
+				return ;
+			}
+			let obj = {
+				name: nameInput.value,
+				age: ageInput.value
+			}
+			list.appendNode(obj);
+			renderTable(list);
+		});
+		insertBtn.addEventListener('click', function(){
+			if(!validator()){
+				return ;
+			}
+			let obj = {
+				name: nameInput.value,
+				age: ageInput.value
+			}
+			let index = parseInt(indexInput.value);
+			list.insertNodeByIndex(index, obj);
+			renderTable(list);
+		})
+		deleteBtn.addEventListener('click',function(){
+			if(delIndex.value == ''){
+				alert('请填入index');
+				return ;
+			}
+			let index = parseInt(delIndex.value);
+			list.deleteNodeByIndex(index);
+			renderTable(list);
+		});
+		deleteAll.addEventListener('click',function(){
+			list.deleteList();
+			renderTable(list);
+		})
+	</script>
+	<script>
+		function validator(){
+			if(nameInput.value == '' || ageInput.value == ''){
+				alert('节点参数填写完整！');
+				return false; 
+			}else{
+				return true;
+			}
+		}
+	</script>
+</body>
+
+</html>

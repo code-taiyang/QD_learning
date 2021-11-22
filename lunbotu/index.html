@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: #666666;
+        }
+
+        .fl {
+            float: left;
+        }
+        /*轮播框*/
+        .wrapper {
+            border: 1px red solid;
+            width: 1200px;
+            margin: 150px auto;
+        }
+
+        .wrapper .album {
+            position: relative;
+            width: 721px;
+            height: 455px;
+            overflow: hidden;
+            margin: auto;
+            background-color: #403d49;
+        }
+        .wrapper .album .imgs {
+            width: 3605px;
+            position: absolute;
+            /* left: 0px; */
+            right: -2884px;
+            transition: 1s;
+        }
+        /*
+        注意
+        这里用img父容器imgs实现了img(float)的并排，且父容器能绝对定位
+        但是注意，img容器的定位是根据relative父容器(album)的空间来定位的
+        当使用left时，img被左推，超出部分被隐藏
+        使用right时，注意！！！ img的位移时自己的右边和父盒子的右边界对齐，故如果有位移直接写正值
+        则会导致album直接显示了最后一张图。若要显示中间的，将right位移设置为负数即可
+        */
+
+        .wrapper .album img {
+            float: left;
+            height: 455px;
+            width: 721px;
+            object-fit: cover;
+        }
+
+        /*手动轮播按钮*/
+        .wrapper .album .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            /* display: block; */
+            width: 22px;
+            height: 32px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .wrapper .album #left_arrow{
+            background-image: url(./img/disabled-prev.png);
+            left: 20px;
+        }
+        .wrapper .album #right_arrow{
+            background-image: url(./img/disabled-next.png);
+            right: 20px;
+        }
+        .wrapper .album .album_btn {
+            position: absolute;
+            left: 50px;
+            bottom: 10px;
+        }
+
+        .wrapper .album .album_btn li {
+            float: left;
+            margin: 0 3px;
+        }
+
+        .album_btn li span {
+            display: block;
+            /*换成inline-block时会导致li的大小和a不一致*/
+            background-color: rgba(218, 40, 40, 0);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 2px rgba(168, 89, 89, 0.5) solid;
+            cursor: pointer;
+        }
+
+        .album_btn .btn_selected {
+            /*当前图片按钮状态*/
+            background-color: rgba(255, 255, 255, .9);
+            border: 2px rgba(165, 98, 98, .9) solid;
+        }
+        /*
+            注意：由于轮播图中除了容器absolute，图片float脱离文档流之外，
+            还有左右按钮，底部按钮等部件也是脱离了文档流，这就需要定义不同的
+            z-index来将不同部分高度优先级区分开        
+        */
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="album">
+            <div class="imgs">
+                <img src="./img/banner1.jpg" alt="1">
+                <img src="./img/banner2.jpg" alt="2">
+                <img src="./img/banner3.jpg" alt="3">
+                <img src="./img/banner4.jpg" alt="4">
+                <img src="./img/focus.jpg" alt="focus">
+            </div>
+            
+
+            <i class="arrow" id="left_arrow"></i>
+            <i class="arrow" id="right_arrow"></i>
+
+            <ul class="album_btn">
+                <li><span class="btn_selected"></span></li>
+                <li><span ></span></li>
+                <li><span ></span></li>
+                <li><span ></span></li>
+                <li><span ></span></li>
+            </ul>
+        </div>
+    </div>
+    <img src="" alt="">
+ 
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
