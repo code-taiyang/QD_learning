@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue-2.6.12/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model='msg'>
+        <comp :class='"sss"' data-a='as' :title='"as"' :msg='msg'></comp>
+    </div>
+    <script>
+        
+        const son = {
+            name: 'son',
+            props: {
+                msg: {
+                    require: false,
+                    type: String,
+                },
+                title: {
+                    require: false,
+                    type: String,
+                }
+            },
+            data(){
+                return {};
+            },
+            methods: {},
+            template: `
+                <div>
+                    <p>{{msg}}</p>    
+                    <p>son_title: {{title}}</p>    
+                </div>
+            `,
+        }
+        const comp = {
+            name: 'comp',
+            data(){
+                return {};
+            },
+            methods: {},
+            components: {
+                son,
+            },
+            template: `
+                <div>
+                    <p>comp</p>
+                    <son v-bind='$attrs'></son>
+                </div>
+            `,
+            mounted(){
+                console.log('this.$attrs :>> ', this.$attrs);
+            },
+        };
+        const vm = new Vue({
+            el: '#app',
+            data(){
+                return {
+                    msg: '父组件msg',
+                    title: 'title'
+                };
+            },
+            methods: {
+
+            },
+            components: {
+                comp,
+            }
+
+        });
+    </script>
+</body>
+</html>

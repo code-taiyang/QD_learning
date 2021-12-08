@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
+</head>
+<body>
+    <script>
+        let obj1 = [
+            {
+                index: {
+                    text:'1.',
+                    style: {
+                        bold: true, 
+                    }
+                },
+                detail: [
+                    {
+                        text: '这是',
+                        style: {
+                            bold: false,
+                        }
+                    },
+                    {
+                        text: '一段文本',
+                        style: {
+                            bold: false,
+                        }
+                    },
+                ]
+            }
+        ];
+        let obj2 = [
+            {
+                index: {
+                    text:'1.',
+                    style: {
+                        bold: true, 
+                    }
+                },
+                detail: [
+                    {
+                        text: '这是',
+                        style: {
+                            bold: false,
+                        }
+                    },
+                    {
+                        text: '一段文本',
+                        style: {
+                            bold: true,
+                        }
+                    },
+                ]
+            }
+        ];
+        console.log('_.isEqual(obj1, obj2) :>> ', _.isEqual(obj1, obj2));
+    </script>
+</body>
+</html>
