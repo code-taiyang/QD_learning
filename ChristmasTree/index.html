@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to Someone</title>
+    <style>
+        .pos-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+        #container {
+            width: 500px;
+            height: 500px;
+            border: 1px solid grey;
+        }
+        .box {
+            width: 200px;
+            height: 200px;
+            background-color: #bfa;
+            /* 保留左上 */
+            /* clip-path: ellipse(100px 100px at 0px 0px); */
+            /* 保留左下 */
+            /* clip-path: ellipse(100px 100px at 0px 200px); */
+            /* 保留右上 */
+            /* clip-path: ellipse(100px 100px at 200px 0px); */
+            /* 保留右下 */
+            clip-path: ellipse(100px 100px at 200px 200px);
+
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <div id="container" class="pos-center">
+
+    </div>
+
+    <script>
+        let div = document.querySelector('.box');
+        // div.addEventListener('focus',function(){
+        //     console.log('div :>> ', div);
+        // })
+        div.focus();
+        let select = window.getSelection();
+        console.log('select :>> ', select);
+    </script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
+    <script src="./index.js"></script>
+    <script src="./utils/config-tool.js"></script>
+    <script src="./Components/Star.js"></script>
+
+    <script>
+        // [a,b)
+        function Random(arr=[0,1]){
+            for(let i=0;i<10;i++){
+                let min = arr[0];
+                let max = arr[1];
+                let range = Math.random()*(max-min) + min;
+                return range;
+            }
+        }
+        function getRandomSize(heightRange=[10,20]){
+            let randomHeight = Math.round(Random(heightRange));
+            let randomWidth = Math.round(Random([0.5,1])*randomHeight);
+            return [randomWidth,randomHeight];
+        }
+        function getRandomPos(XRange=[0,500],YRange=[0,500]){
+            let randomX = Math.round(Random(XRange));
+            let randomY = Math.round(Random(YRange));
+            return [randomX,randomY]
+        }
+    </script>
+    <script>
+        /**
+         * container
+         * starColor
+         * angleColor
+         * starPos
+         * starSize
+         */
+        let config = {
+            container: '#container',
+            starColor: '#bfa',
+            angleColor: '',
+            starPos: ["calc(50% - 50px)",100],
+            starSize: [100,100]
+        };
+        for(let i=0;i<10;i++){
+           let size = getRandomSize([10,100]);
+           let pos = getRandomPos([0,500-size[0]],[0,500-size[1]]);
+           config.starSize = size;
+           config.starPos = pos;
+           Chrismas.Star.Create(config);
+        }
+        
+    </script>
+
+</body>
+</html>
