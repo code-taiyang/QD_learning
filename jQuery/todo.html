@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../vue-2.6.12/dist/vue.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        input,
+        button {
+            outline: none;
+            box-sizing: content-box;
+        }
+
+        i {
+            font-style: normal;
+        }
+
+        #todo-wrapper {
+            width: 400px;
+            margin: 100px auto;
+            padding: 10px 0;
+            text-align: center;
+            box-shadow: 5px 2px 5px rgba(22, 22, 22, .4);
+            background-color: rgb(243, 242, 242);
+        }
+        .title {
+            margin-bottom: 5px;
+        }
+        .input-todo,
+        .todo-list {
+            position: relative;
+            min-width: 300px;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        .input-todo {
+            height: 30px;
+        }
+
+        .input,
+        .write {
+            height: 28px;
+            border: solid 1px #CCC;
+        }
+
+        /* todo输入框 */
+        .input {
+            padding-left: 30px;
+            width: 270px;
+            border-radius: 5px;
+            font-size: 14px;
+
+        }
+
+        .select-all,
+        .select-btn,
+        .delet,
+        .write {
+            position: absolute;
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* 全选按钮 */
+        .select-all {
+            font-size: 12px;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+
+        }
+
+        /* write 按钮 */
+        .write {
+            top: 0;
+            right: -2px;
+            border-radius: 0 5px 5px 0;
+            width: 50px;
+        }
+
+        /* 完成按钮 */
+        .select-btn {
+            left: 0;
+        }
+
+        /* 完成状态 */
+        .done {
+            text-decoration: #666 line-through 1px;
+            opacity: 0.4;
+        }
+
+        /* 删除按钮 */
+        .delet {
+            right: 0;
+        }
+
+        /* todo列表项 */
+        .todos {
+            position: relative;
+            border-bottom: 1px rgb(204, 201, 201) dotted;
+        }
+
+        /* todo信息 */
+        .todo-msg {
+            display: inline-block;
+            font-size: 16px;
+            color: #666;
+            /* 内容溢出省略 */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="todo-wrapper">
+        <p class="title">ToDo List</p>
+        <div class="input-todo">
+            <!-- 全部done -->
+            <i class="select-all">全选</i>
+            <!-- 输入内容 -->
+            <input type="text" class="input" placeholder='write something to do...'>
+            <!-- 创建todo -->
+            <button class="write">确定</button>
+        </div>
+        <ul class="todo-list">
+            <!-- 此处根据输入动态生成todo的内容 -->
+        </ul>
+    </div>
+
+    <script>
+        var todoContent = '';
+        var list = document.querySelector('.todo-list');//ul元素
+        var selectAllBtn = document.querySelector('.select-all');//全选按钮
+        var todoInput = document.querySelector('.input-todo input');//输入框
+        var sureBtn = document.querySelector('.write');//确定按钮
+        selectAllBtn.addEventListener('click', selectAll);
+        todoInput.addEventListener('input', handleInput);
+        sureBtn.addEventListener('click', createTodo);
+
+        function selectAll(){
+            // 给所有todoItem添加或删除done的class
+            var spans = list.querySelectorAll('.todo-msg');
+            spans = Array.prototype.slice.call(spans);//spans是类似数组的结构，需要转换成数组才能使用数组的方法
+            var isNoAllDone = spans.some(function(span, i){
+                var isDone = span.getAttribute('data-done');
+                return isDone === '0';
+            });
+            if(!isNoAllDone){//如果全选了则删除
+                spans.forEach(function(span,index){
+                    span.classList.remove('done');
+                    span.setAttribute('data-done', '0');
+                });
+            }else{//否则就添加
+                spans.forEach(function(span,index){
+                    span.classList.add('done');
+                    span.setAttribute('data-done', '1');
+                });
+            }
+        }
+        function handleInput(e){
+            todoContent = e.target.value;//获取todo的输入内容
+        }
+        function createTodo(){
+            addToDoItem(todoContent);
+            todoContent = '';//重置内容
+            todoInput.value = '';//清空输入框的内容
+        }
+
+        function addToDoItem(todoContent){
+            if(!todoContent) return false;//如果没有输入内容就不添加todo
+            var div = document.createElement('div');
+            div.setAttribute('class','todos');
+            var content = `
+                <i class="select-btn">done</i>
+                <span class='todo-msg' data-done='0'>${todoContent}</span>
+                <i class="delet">del</i>
+            `
+            div.innerHTML = content;
+            div.querySelector('.select-btn').addEventListener('click', done);
+            div.querySelector('.delet').addEventListener('click', removeItem);
+            list.appendChild(div);
+        }
+        function done(e){
+            // 若todoItem中的span元素的class属性有done，则删除done
+            // 如果没有则添加
+            var parent = e.target.parentNode;
+            var span = parent.querySelector('.todo-msg');
+            var isDone = span.getAttribute('data-done');
+            if(isDone === '0'){
+                isDone = '1';
+                span.classList.add('done');
+            }else if(isDone === '1'){
+                isDone = '0';
+                span.classList.remove('done');
+            }
+            span.setAttribute('data-done', isDone);
+        }
+        function removeItem(e){
+            // 获取到该元素的父元素，调用父元素的remove方法
+            var parent = e.target.parentNode;
+            list.removeChild(parent);
+        }
+    </script>
+</body>
+
+</html>
