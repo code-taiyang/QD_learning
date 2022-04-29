@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: #666666;
+        }
+
+        .fl {
+            float: left;
+        }
+        /*轮播框*/
+        .wrapper {
+            border: 1px red solid;
+            width: 1200px;
+            margin: 150px auto;
+        }
+
+        .wrapper .album {
+            position: relative;
+            width: 721px;
+            height: 455px;
+            overflow: hidden;
+            margin: auto;
+            background-color: #403d49;
+        }
+        .wrapper .album .imgs {
+            width: 3605px;
+            position: absolute;
+            /* left: 0px; */
+            right: -2884px;
+            transition: 1s;
+        }
+
+        .wrapper .album img {
+            float: left;
+            height: 455px;
+            width: 721px;
+            object-fit: cover;
+        }
+
+        /*手动轮播按钮*/
+        .wrapper .album .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            /* display: block; */
+            width: 22px;
+            height: 32px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .wrapper .album #left_arrow{
+            background-image: url(./img/disabled-prev.png);
+            left: 20px;
+        }
+        .wrapper .album #right_arrow{
+            background-image: url(./img/disabled-next.png);
+            right: 20px;
+        }
+        .wrapper .album .album_btn {
+            position: absolute;
+            left: 50px;
+            bottom: 10px;
+        }
+
+        .wrapper .album .album_btn li {
+            float: left;
+            margin: 0 3px;
+        }
+
+        .album_btn li span {
+            display: block;
+            /*换成inline-block时会导致li的大小和a不一致*/
+            background-color: rgba(218, 40, 40, 0);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 2px rgba(168, 89, 89, 0.5) solid;
+            cursor: pointer;
+        }
+
+        .album_btn .btn_selected {
+            /*当前图片按钮状态*/
+            background-color: rgba(255, 255, 255, .9);
+            border: 2px rgba(165, 98, 98, .9) solid;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="album">
+            <div class="imgs">
+                <img src="./img/banner1.jpg" alt="1">
+                <img src="./img/banner2.jpg" alt="2">
+                <img src="./img/banner3.jpg" alt="3">
+                <img src="./img/banner4.jpg" alt="4">
+                <img src="./img/focus.jpg" alt="focus">
+            </div>
+            
+
+            <i class="arrow" id="left_arrow"></i>
+            <i class="arrow" id="right_arrow"></i>
+
+            <ul class="album_btn">
+                <li><span class="btn_selected"></span></li>
+                <li><span ></span></li>
+                <li><span ></span></li>
+                <li><span ></span></li>
+                <li><span ></span></li>
+            </ul>
+        </div>
+    </div>
+    <!-- <img src="./img/focus.jpg" alt="1"> -->
+ 
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+    <script type="text/javascript">
+    $(function(){
+        var leftBtn=$("#left_arrow"),
+            rightBtn=$("#right_arrow"),
+            albumBtn=$('.album_btn>li>span'),
+            timer=setInterval(move,2000),
+            index=0,
+            image=$('.imgs');
+        leftBtn.click(leftIn);
+        rightBtn.click(rightIn);
+        $('.album_btn>li').click(changeImg);
+        function leftIn(){
+            clearInterval(timer);
+            index--;
+            if(index==-1)index=4;
+            image.animate({"left":-721*index},30);
+            albumBtn.eq(index).addClass('btn_selected').parent().siblings().find('span').removeClass('btn_selected');
+            timer=setInterval(move,2000);
+        }
+        function rightIn(){
+            clearInterval(timer);
+            index++;
+            if(index==5)index=0;
+            image.animate({"left":-721*index},30);
+            albumBtn.eq(index).addClass('btn_selected').parent().siblings().find('span').removeClass('btn_selected');
+            timer=setInterval(move,2000);
+        }
+        function changeImg(){
+            clearInterval(timer);
+            image.animate({"left":-721*($(this).index())},30);
+            $(this).find('span').addClass('btn_selected');
+            $(this).siblings().find('span').removeClass('btn_selected');
+            timer=setInterval(move,2000);
+        }
+        function move() {
+            index++;
+            if(index==5)index=0;
+            image.animate({"left":-721*index},30);
+            albumBtn.eq(index).addClass('btn_selected').parent().siblings().find('span').removeClass('btn_selected');
+        }
+    })  
+        
+    </script>
+</body>
+
+</html>

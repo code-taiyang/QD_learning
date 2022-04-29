@@ -73,8 +73,9 @@ number = '2';
  * 前者在js中表示对象但值为空，后者表示未赋值
  * 在ts中是其它类型的子集，即不受类型的限制【strictNullChecks选项关闭的前提下】。
  */
-let num: number = null;//可以赋值，strictNullChecks选项要为false
-num = undefined;
+let num: number;
+// num = null;//报错，strictNullChecks选项要为false才可以赋值
+// num = undefined;
 
 /**
  * @description void 表示函数没有且[不能有]返回值
@@ -89,8 +90,73 @@ function func2(): void{
  * @description 泛型。
  */
 function add<T>(a:T, b: T):T {
+    return a;
     // return a + b;会报错，可能是因为+运算符会导致无法预测的类型改变（隐式转换）
 }
-function silce<T>(arr: T[], index: number):T[] {
+function slice<T>(arr: T[], index: number):T[] {
     return arr.slice(index);
 }
+slice<string>(['1','2'], 1);
+slice<number>(['1','2'], 1);//报错，泛型类型不一致
+slice([1,2], 1);// 可以不去指明泛型，ts编译器可以自己推导。
+//返回的数组成员类型也一定是指定的泛型
+
+/**
+ * @description 联合类型，让变量可以拥有多种类型选择
+ */
+let a: number | string;//类型取并集
+function hello(name: string | string[]): string{
+    return ''
+}
+
+interface A {
+    name: string
+    age: number
+  }
+  
+interface B {
+    name: number
+    id: string
+}
+
+type Union = A | B;
+const c: Union = {
+    name: 12,
+    age: 1,
+    id: 'as',
+}
+console.log(c);
+
+/**
+ * @description 交叉类型
+ */
+let a1: number & string = 1;//报错，因为number和string无交集
+let b: (string | number) & string = '1';//类型取交集
+interface IPerson {
+    id: string;
+    age: number;
+    name: string;
+}
+
+interface IWorker {
+    name: number;
+    companyId: string;
+}
+
+type IStaff = IPerson & IWorker;
+
+const staff: IStaff = {
+    id: 'E1006',
+    name: 'sy',
+    age: 33,
+    companyId: 'EFT'
+};
+
+console.dir(staff)
+  
+
+/**
+ * @description 元组
+ */
+let metaArr: [number, number, number];
+metaArr = [1, 1, 1];

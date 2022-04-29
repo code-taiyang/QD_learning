@@ -13,6 +13,7 @@
 <body>
     <div id="app">
        <son></son>
+       <div @click="say($event, 'say')">123</div>
     </div>
     <script>
         let son = Vue.component('son',{
@@ -53,6 +54,9 @@
                 son,
             },
             methods: {
+                say(e){
+                    console.log('e :>> ', e);
+                },
                 toggleValue() {
                     this.value = !this.value;
                 },
